@@ -1,4 +1,4 @@
-﻿using Application.Services.Repositories;
+using Application.Services.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,7 +12,7 @@ public static class PersistenceServiceRegistration
 {
     public static IServiceCollection AddPersistenceServices(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddDbContext<BaseDbContext>(options => options.UseInMemoryDatabase("BaseDb"));
+        services.AddDbContext<BaseDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("BaseDb")));
         services.AddDbMigrationApplier(buildServices => buildServices.GetRequiredService<BaseDbContext>());
 
         services.AddScoped<IEmailAuthenticatorRepository, EmailAuthenticatorRepository>();
@@ -22,6 +22,19 @@ public static class PersistenceServiceRegistration
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IUserOperationClaimRepository, UserOperationClaimRepository>();
 
+        services.AddScoped<ITenantRepository, TenantRepository>();
+        services.AddScoped<ISubscriptionPlanRepository, SubscriptionPlanRepository>();
+        services.AddScoped<ISubscriptionRepository, SubscriptionRepository>();
+        services.AddScoped<IProjectRepository, ProjectRepository>();
+        services.AddScoped<ISiteRepository, SiteRepository>();
+        services.AddScoped<IDrawingRepository, DrawingRepository>();
+        services.AddScoped<IMetrajRuleTemplateRepository, MetrajRuleTemplateRepository>();
+        services.AddScoped<IMetrajResultRepository, MetrajResultRepository>();
+        services.AddScoped<IWorkerRepository, WorkerRepository>();
+        services.AddScoped<IPuantajRecordRepository, PuantajRecordRepository>();
+        services.AddScoped<IContractItemRepository, ContractItemRepository>();
+        services.AddScoped<IHakedisPeriodRepository, HakedisPeriodRepository>();
+        services.AddScoped<IProgressEntryRepository, ProgressEntryRepository>();
         return services;
     }
 }

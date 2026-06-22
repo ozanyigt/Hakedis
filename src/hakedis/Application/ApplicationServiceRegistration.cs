@@ -1,4 +1,4 @@
-﻿using System.Reflection;
+using System.Reflection;
 using Application.Services.AuthenticatorService;
 using Application.Services.AuthService;
 using Application.Services.UsersService;
@@ -20,6 +20,19 @@ using NArchitecture.Core.Mailing;
 using NArchitecture.Core.Mailing.MailKit;
 using NArchitecture.Core.Security.DependencyInjection;
 using NArchitecture.Core.Security.JWT;
+using Application.Services.Tenants;
+using Application.Services.SubscriptionPlans;
+using Application.Services.Subscriptions;
+using Application.Services.Projects;
+using Application.Services.Sites;
+using Application.Services.Drawings;
+using Application.Services.MetrajRuleTemplates;
+using Application.Services.MetrajResults;
+using Application.Services.Workers;
+using Application.Services.PuantajRecords;
+using Application.Services.ContractItems;
+using Application.Services.HakedisPeriods;
+using Application.Services.ProgressEntries;
 
 namespace Application;
 
@@ -61,6 +74,19 @@ public static class ApplicationServiceRegistration
 
         services.AddSecurityServices<Guid, int, Guid>(tokenOptions);
 
+        services.AddScoped<ITenantService, TenantManager>();
+        services.AddScoped<ISubscriptionPlanService, SubscriptionPlanManager>();
+        services.AddScoped<ISubscriptionService, SubscriptionManager>();
+        services.AddScoped<IProjectService, ProjectManager>();
+        services.AddScoped<ISiteService, SiteManager>();
+        services.AddScoped<IDrawingService, DrawingManager>();
+        services.AddScoped<IMetrajRuleTemplateService, MetrajRuleTemplateManager>();
+        services.AddScoped<IMetrajResultService, MetrajResultManager>();
+        services.AddScoped<IWorkerService, WorkerManager>();
+        services.AddScoped<IPuantajRecordService, PuantajRecordManager>();
+        services.AddScoped<IContractItemService, ContractItemManager>();
+        services.AddScoped<IHakedisPeriodService, HakedisPeriodManager>();
+        services.AddScoped<IProgressEntryService, ProgressEntryManager>();
         return services;
     }
 
