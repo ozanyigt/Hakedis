@@ -26,6 +26,7 @@ public class CalculateMetrajCommand : IRequest<CalculateMetrajResponse>, ISecure
     private readonly IDrawingRepository _drawingRepository;
     private readonly IMetrajResultRepository _metrajResultRepository;
     private readonly IMetrajRuleTemplateRepository _metrajRuleTemplateRepository;
+    private readonly IProjectMetrajLayerMappingRepository _projectMetrajLayerMappingRepository;
     private readonly IContractItemRepository _contractItemRepository;
     private readonly IMetrajCalculationService _metrajCalculationService;
     private readonly DrawingBusinessRules _drawingBusinessRules;
@@ -34,6 +35,7 @@ public class CalculateMetrajCommand : IRequest<CalculateMetrajResponse>, ISecure
       IDrawingRepository drawingRepository,
       IMetrajResultRepository metrajResultRepository,
       IMetrajRuleTemplateRepository metrajRuleTemplateRepository,
+      IProjectMetrajLayerMappingRepository projectMetrajLayerMappingRepository,
       IContractItemRepository contractItemRepository,
       IMetrajCalculationService metrajCalculationService,
       DrawingBusinessRules drawingBusinessRules
@@ -42,6 +44,7 @@ public class CalculateMetrajCommand : IRequest<CalculateMetrajResponse>, ISecure
       _drawingRepository = drawingRepository;
       _metrajResultRepository = metrajResultRepository;
       _metrajRuleTemplateRepository = metrajRuleTemplateRepository;
+      _projectMetrajLayerMappingRepository = projectMetrajLayerMappingRepository;
       _contractItemRepository = contractItemRepository;
       _metrajCalculationService = metrajCalculationService;
       _drawingBusinessRules = drawingBusinessRules;
@@ -92,13 +95,15 @@ public class CalculateMetrajCommand : IRequest<CalculateMetrajResponse>, ISecure
 
         await DeleteExistingResultsAsync(drawing.Id, cancellationToken);
 
-        Dictionary<MetrajKalemType, string> units = await GetContractUnitsAsync(drawing, cancellationToken);
+        Dictionary<MetrajKalemType, MeasurementUnit> units = await GetContractUnitsAsync(drawing, cancellationToken);
         DateTime calculatedAt = DateTime.UtcNow;
         List<CalculatedMetrajItemDto> savedItems = [];
 
         foreach (MetrajCalculationItemDto item in calculation.Items)
         {
-          string unit = units.TryGetValue(item.KalemType, out string? contractUnit) ? contractUnit : item.Unit;
+          MeasurementUnit unit = units.TryGetValue(item.KalemType, out MeasurementUnit contractUnit)
+            ? contractUnit
+            : item.Unit;
 
           MetrajResult entity = new()
           {
@@ -167,13 +172,26 @@ public class CalculateMetrajCommand : IRequest<CalculateMetrajResponse>, ISecure
         cancellationToken: cancellationToken
       );
 
-      if (templates.Items.Count > 0)
-        return templates.Items.Select(MetrajCalculationDefaults.FromTemplate).ToList();
+      IReadOnlyList<MetrajKalemRule> fallbackRules =
+        templates.Items.Count > 0
+          ? templates.Items.Select(MetrajCalculationDefaults.FromTemplate).ToList()
+          : MetrajCalculationDefaults.GetDefaultRules();
 
-      return MetrajCalculationDefaults.GetDefaultRules();
+      IPaginate<ProjectMetrajLayerMapping> projectMappings =
+        await _projectMetrajLayerMappingRepository.GetListAsync(
+          predicate: mapping => mapping.ProjectId == drawing.ProjectId,
+          index: 0,
+          size: 20,
+          cancellationToken: cancellationToken
+        );
+
+      if (!MetrajCalculationRuleBuilder.HasProjectLayerMappings(projectMappings.Items))
+        return fallbackRules;
+
+      return MetrajCalculationRuleBuilder.MergeProjectLayerMappings(projectMappings.Items, fallbackRules);
     }
 
-    private async Task<Dictionary<MetrajKalemType, string>> GetContractUnitsAsync(
+    private async Task<Dictionary<MetrajKalemType, MeasurementUnit>> GetContractUnitsAsync(
       Drawing drawing,
       CancellationToken cancellationToken
     )

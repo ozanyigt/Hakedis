@@ -1,9 +1,13 @@
 ﻿using Application.Features.Users.Commands.Create;
 using Application.Features.Users.Commands.Delete;
 using Application.Features.Users.Commands.Update;
+using Application.Features.Users.Commands.UpdateFirmRole;
 using Application.Features.Users.Commands.UpdateFromAuth;
 using Application.Features.Users.Queries.GetById;
+using Application.Features.Users.Queries.GetFromAuth;
+using Application.Features.Users.Queries.GetFirmRoles;
 using Application.Features.Users.Queries.GetList;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NArchitecture.Core.Application.Requests;
 using NArchitecture.Core.Application.Responses;
@@ -21,19 +25,26 @@ public class UsersController : BaseController
         return Ok(result);
     }
 
+    [Authorize]
     [HttpGet("GetFromAuth")]
     public async Task<IActionResult> GetFromAuth()
     {
-        GetByIdUserQuery getByIdUserQuery = new() { Id = getUserIdFromRequest() };
-        GetByIdUserResponse result = await Mediator.Send(getByIdUserQuery);
+        GetByIdUserResponse result = await Mediator.Send(new GetFromAuthUserQuery());
         return Ok(result);
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetList([FromQuery] PageRequest pageRequest)
+    public async Task<IActionResult> GetList([FromQuery] PageRequest pageRequest, [FromQuery] Guid? tenantId)
     {
-        GetListUserQuery getListUserQuery = new() { PageRequest = pageRequest };
+        GetListUserQuery getListUserQuery = new() { PageRequest = pageRequest, TenantId = tenantId };
         GetListResponse<GetListUserListItemDto> result = await Mediator.Send(getListUserQuery);
+        return Ok(result);
+    }
+
+    [HttpGet("FirmRoles")]
+    public async Task<IActionResult> GetFirmRoles()
+    {
+        IReadOnlyList<FirmRoleListItemDto> result = await Mediator.Send(new GetFirmRolesQuery());
         return Ok(result);
     }
 
@@ -42,6 +53,13 @@ public class UsersController : BaseController
     {
         CreatedUserResponse result = await Mediator.Send(createUserCommand);
         return Created(uri: "", result);
+    }
+
+    [HttpPut("FirmRole")]
+    public async Task<IActionResult> UpdateFirmRole([FromBody] UpdateUserFirmRoleCommand updateUserFirmRoleCommand)
+    {
+        UpdatedUserFirmRoleResponse result = await Mediator.Send(updateUserFirmRoleCommand);
+        return Ok(result);
     }
 
     [HttpPut]

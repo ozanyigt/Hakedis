@@ -35,6 +35,7 @@ public class GetByIdUserQuery : IRequest<GetByIdUserResponse>, ISecuredRequest
                 cancellationToken: cancellationToken
             );
             await _userBusinessRules.UserShouldBeExistsWhenSelected(user);
+            await _userBusinessRules.UserShouldBeManageableByCaller(user!);
 
             GetByIdUserResponse response = _mapper.Map<GetByIdUserResponse>(user);
             return response;

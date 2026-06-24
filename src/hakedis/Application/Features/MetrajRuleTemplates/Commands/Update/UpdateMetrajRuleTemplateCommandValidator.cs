@@ -12,7 +12,7 @@ public class UpdateMetrajRuleTemplateCommandValidator : AbstractValidator<Update
         RuleFor(c => c.KalemType).NotEmpty();
         RuleFor(c => c.LayerPatterns).NotEmpty();
         RuleFor(c => c.EntityTypes).NotEmpty();
-        RuleFor(c => c.Unit).NotEmpty();
+        RuleFor(c => c.Unit).IsInEnum();
         RuleFor(c => c.DeductOpenings).NotEmpty();
         RuleFor(c => c.IsDefault).NotEmpty();
         RuleFor(c => c.IsActive).NotEmpty();

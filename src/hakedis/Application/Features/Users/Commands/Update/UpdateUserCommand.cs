@@ -1,8 +1,10 @@
 using Application.Features.Users.Constants;
 using Application.Features.Users.Rules;
+using Application.Services.FirmRoles;
 using Application.Services.Repositories;
 using AutoMapper;
 using Domain.Entities;
+using Domain.Enums;
 using MediatR;
 using NArchitecture.Core.Application.Pipelines.Authorization;
 using NArchitecture.Core.Security.Hashing;
@@ -16,38 +18,37 @@ public class UpdateUserCommand : IRequest<UpdatedUserResponse>, ISecuredRequest
     public string FirstName { get; set; }
     public string LastName { get; set; }
     public string Email { get; set; }
-    public string Password { get; set; }
+    public string? Password { get; set; }
+    public FirmRole FirmRole { get; set; }
+    public FirmRole? SecondaryFirmRole { get; set; }
 
     public UpdateUserCommand()
     {
         FirstName = string.Empty;
         LastName = string.Empty;
         Email = string.Empty;
-        Password = string.Empty;
     }
 
-    public UpdateUserCommand(Guid id, string firstName, string lastName, string email, string password)
-    {
-        Id = id;
-        FirstName = firstName;
-        LastName = lastName;
-        Email = email;
-        Password = password;
-    }
-
-    public string[] Roles => new[] { Admin, Write, UsersOperationClaims.Update };
+    public string[] Roles => [Admin, Write, UsersOperationClaims.Update];
 
     public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, UpdatedUserResponse>
     {
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
         private readonly UserBusinessRules _userBusinessRules;
+        private readonly IFirmRoleAssignmentService _firmRoleAssignmentService;
 
-        public UpdateUserCommandHandler(IUserRepository userRepository, IMapper mapper, UserBusinessRules userBusinessRules)
+        public UpdateUserCommandHandler(
+            IUserRepository userRepository,
+            IMapper mapper,
+            UserBusinessRules userBusinessRules,
+            IFirmRoleAssignmentService firmRoleAssignmentService
+        )
         {
             _userRepository = userRepository;
             _mapper = mapper;
             _userBusinessRules = userBusinessRules;
+            _firmRoleAssignmentService = firmRoleAssignmentService;
         }
 
         public async Task<UpdatedUserResponse> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
@@ -57,17 +58,34 @@ public class UpdateUserCommand : IRequest<UpdatedUserResponse>, ISecuredRequest
                 cancellationToken: cancellationToken
             );
             await _userBusinessRules.UserShouldBeExistsWhenSelected(user);
-            await _userBusinessRules.UserEmailShouldNotExistsWhenUpdate(user!.Id, user.Email);
-            user = _mapper.Map(request, user);
+            await _userBusinessRules.UserShouldBeManageableByCaller(user!);
+            await _userBusinessRules.UserEmailShouldNotExistsWhenUpdate(request.Id, request.Email);
 
-            HashingHelper.CreatePasswordHash(
-                request.Password,
-                passwordHash: out byte[] passwordHash,
-                passwordSalt: out byte[] passwordSalt
-            );
-            user!.PasswordHash = passwordHash;
-            user.PasswordSalt = passwordSalt;
+            user!.FirstName = request.FirstName.Trim();
+            user.LastName = request.LastName.Trim();
+            user.Email = request.Email.Trim();
+            user.FirmRole = request.FirmRole;
+            user.SecondaryFirmRole = request.SecondaryFirmRole;
+
+            if (!string.IsNullOrWhiteSpace(request.Password))
+            {
+                HashingHelper.CreatePasswordHash(
+                    request.Password,
+                    passwordHash: out byte[] passwordHash,
+                    passwordSalt: out byte[] passwordSalt
+                );
+                user.PasswordHash = passwordHash;
+                user.PasswordSalt = passwordSalt;
+            }
+
             await _userRepository.UpdateAsync(user);
+
+            await _firmRoleAssignmentService.AssignAsync(
+                user.Id,
+                request.FirmRole,
+                request.SecondaryFirmRole,
+                cancellationToken
+            );
 
             UpdatedUserResponse response = _mapper.Map<UpdatedUserResponse>(user);
             return response;

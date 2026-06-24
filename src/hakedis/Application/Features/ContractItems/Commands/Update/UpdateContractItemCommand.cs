@@ -19,7 +19,7 @@ public class UpdateContractItemCommand : IRequest<UpdatedContractItemResponse>, 
     public required Guid ProjectId { get; set; }
     public required MetrajKalemType KalemType { get; set; }
     public required string Description { get; set; }
-    public required string Unit { get; set; }
+    public required MeasurementUnit Unit { get; set; }
     public required decimal UnitPrice { get; set; }
     public decimal? ContractQuantity { get; set; }
     public required int SortOrder { get; set; }

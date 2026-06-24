@@ -35,6 +35,7 @@ public class DeleteUserCommand : IRequest<DeletedUserResponse>, ISecuredRequest
                 cancellationToken: cancellationToken
             );
             await _userBusinessRules.UserShouldBeExistsWhenSelected(user);
+            await _userBusinessRules.UserShouldBeManageableByCaller(user!);
 
             await _userRepository.DeleteAsync(user!);
 

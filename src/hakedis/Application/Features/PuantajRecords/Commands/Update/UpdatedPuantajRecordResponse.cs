@@ -11,7 +11,7 @@ public class UpdatedPuantajRecordResponse : IResponse
     public Guid? SiteId { get; set; }
     public Guid? WorkerId { get; set; }
     public DateTime WorkDate { get; set; }
-    public string WorkType { get; set; }
+    public WorkType WorkType { get; set; }
     public decimal DayCount { get; set; }
     public decimal OvertimeHours { get; set; }
     public PuantajStatus Status { get; set; }

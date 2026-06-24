@@ -63,9 +63,8 @@ namespace Persistence.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("TenantId");
 
-                    b.Property<string>("Unit")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)")
+                    b.Property<int>("Unit")
+                        .HasColumnType("int")
                         .HasColumnName("Unit");
 
                     b.Property<decimal>("UnitPrice")
@@ -195,6 +194,61 @@ namespace Persistence.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("EmailAuthenticators", (string)null);
+                });
+
+            modelBuilder.Entity("Domain.Entities.HakedisDeductionLine", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("Id");
+
+                    b.Property<decimal>("Amount")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)")
+                        .HasColumnName("Amount");
+
+                    b.Property<int>("Category")
+                        .HasColumnType("int")
+                        .HasColumnName("Category");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("CreatedDate");
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("DeletedDate");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)")
+                        .HasColumnName("Description");
+
+                    b.Property<Guid>("HakedisPeriodId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("HakedisPeriodId");
+
+                    b.Property<string>("Notes")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("Notes");
+
+                    b.Property<Guid>("TenantId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("TenantId");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("UpdatedDate");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("HakedisPeriodId");
+
+                    b.HasIndex("TenantId");
+
+                    b.ToTable("HakedisDeductionLines", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.HakedisPeriod", b =>
@@ -339,9 +393,8 @@ namespace Persistence.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("TenantId");
 
-                    b.Property<string>("Unit")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)")
+                    b.Property<int>("Unit")
+                        .HasColumnType("int")
                         .HasColumnName("Unit");
 
                     b.Property<DateTime?>("UpdatedDate")
@@ -425,9 +478,8 @@ namespace Persistence.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("TenantId");
 
-                    b.Property<string>("Unit")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)")
+                    b.Property<int>("Unit")
+                        .HasColumnType("int")
                         .HasColumnName("Unit");
 
                     b.Property<DateTime?>("UpdatedDate")
@@ -1319,9 +1371,8 @@ namespace Persistence.Migrations
                         .HasColumnType("datetime2")
                         .HasColumnName("WorkDate");
 
-                    b.Property<string>("WorkType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)")
+                    b.Property<int>("WorkType")
+                        .HasColumnType("int")
                         .HasColumnName("WorkType");
 
                     b.Property<Guid?>("WorkerId")
@@ -1658,6 +1709,22 @@ namespace Persistence.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("Email");
 
+                    b.Property<int?>("FirmRole")
+                        .HasColumnType("int")
+                        .HasColumnName("FirmRole");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("FirstName");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("LastName");
+
                     b.Property<byte[]>("PasswordHash")
                         .IsRequired()
                         .HasColumnType("varbinary(max)")
@@ -1667,6 +1734,10 @@ namespace Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("varbinary(max)")
                         .HasColumnName("PasswordSalt");
+
+                    b.Property<int?>("SecondaryFirmRole")
+                        .HasColumnType("int")
+                        .HasColumnName("SecondaryFirmRole");
 
                     b.Property<Guid?>("TenantId")
                         .HasColumnType("uniqueidentifier")
@@ -1685,12 +1756,14 @@ namespace Persistence.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("d32f9ff3-8d84-44c3-a4eb-4a3a4d5da9e2"),
+                            Id = new Guid("dfc3b388-1c0e-4c92-bb77-759140f27e11"),
                             AuthenticatorType = 0,
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "narch@kodlama.io",
-                            PasswordHash = new byte[] { 136, 156, 37, 172, 115, 175, 160, 220, 188, 239, 29, 45, 169, 157, 2, 37, 211, 177, 201, 86, 148, 115, 253, 237, 83, 235, 6, 209, 167, 180, 65, 219, 94, 230, 11, 210, 120, 191, 1, 210, 81, 78, 222, 201, 39, 130, 106, 39, 8, 68, 200, 17, 84, 7, 148, 14, 61, 125, 220, 61, 24, 210, 194, 138 },
-                            PasswordSalt = new byte[] { 94, 253, 205, 69, 71, 75, 8, 122, 30, 7, 145, 55, 138, 155, 36, 32, 184, 184, 28, 253, 119, 62, 186, 70, 93, 166, 15, 230, 200, 25, 53, 238, 183, 20, 2, 14, 138, 35, 205, 43, 147, 12, 5, 157, 64, 127, 154, 57, 238, 236, 50, 223, 178, 52, 149, 51, 70, 12, 199, 36, 20, 65, 37, 35, 38, 225, 253, 170, 189, 22, 103, 188, 142, 34, 203, 186, 20, 55, 169, 198, 91, 184, 163, 133, 149, 249, 9, 151, 148, 169, 184, 4, 183, 212, 58, 242, 129, 196, 183, 144, 12, 230, 33, 185, 34, 138, 100, 6, 93, 72, 177, 117, 149, 177, 254, 149, 148, 212, 77, 153, 3, 220, 114, 35, 196, 133, 200, 139 }
+                            FirstName = "Admin",
+                            LastName = "User",
+                            PasswordHash = new byte[] { 115, 118, 94, 85, 174, 33, 147, 175, 91, 96, 136, 203, 181, 140, 255, 52, 223, 195, 145, 99, 160, 50, 203, 182, 175, 190, 198, 209, 113, 204, 231, 213, 73, 26, 221, 116, 148, 150, 33, 111, 232, 89, 224, 43, 46, 157, 157, 170, 25, 234, 129, 139, 105, 45, 199, 183, 16, 195, 229, 142, 88, 232, 157, 234 },
+                            PasswordSalt = new byte[] { 148, 168, 22, 69, 85, 174, 185, 212, 81, 13, 189, 223, 227, 194, 46, 75, 91, 252, 81, 185, 190, 75, 194, 162, 223, 179, 255, 99, 236, 246, 26, 99, 49, 142, 119, 10, 27, 117, 74, 133, 124, 7, 150, 67, 95, 16, 14, 217, 96, 168, 177, 187, 73, 151, 103, 93, 175, 91, 226, 163, 36, 9, 136, 173, 185, 51, 46, 179, 130, 10, 26, 192, 156, 139, 153, 189, 151, 134, 8, 25, 217, 56, 111, 118, 91, 242, 7, 45, 112, 159, 14, 246, 95, 176, 62, 90, 44, 235, 192, 53, 50, 191, 39, 154, 246, 162, 236, 213, 224, 239, 123, 215, 183, 58, 15, 100, 166, 236, 197, 156, 47, 96, 41, 135, 177, 100, 215, 165 }
                         });
                 });
 
@@ -1732,10 +1805,10 @@ namespace Persistence.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("9cd499c8-f576-4d30-afb2-3a4d9ea538a1"),
+                            Id = new Guid("eac3afcd-86e6-4751-aa8d-608fce4444be"),
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             OperationClaimId = 1,
-                            UserId = new Guid("d32f9ff3-8d84-44c3-a4eb-4a3a4d5da9e2")
+                            UserId = new Guid("dfc3b388-1c0e-4c92-bb77-759140f27e11")
                         });
                 });
 
@@ -1844,6 +1917,25 @@ namespace Persistence.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Domain.Entities.HakedisDeductionLine", b =>
+                {
+                    b.HasOne("Domain.Entities.HakedisPeriod", "HakedisPeriod")
+                        .WithMany("DeductionLines")
+                        .HasForeignKey("HakedisPeriodId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.Tenant", "Tenant")
+                        .WithMany()
+                        .HasForeignKey("TenantId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("HakedisPeriod");
+
+                    b.Navigation("Tenant");
                 });
 
             modelBuilder.Entity("Domain.Entities.HakedisPeriod", b =>
@@ -2114,6 +2206,8 @@ namespace Persistence.Migrations
 
             modelBuilder.Entity("Domain.Entities.HakedisPeriod", b =>
                 {
+                    b.Navigation("DeductionLines");
+
                     b.Navigation("ProgressEntries");
                 });
 

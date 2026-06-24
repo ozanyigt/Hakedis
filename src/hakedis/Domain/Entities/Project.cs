@@ -22,5 +22,7 @@ public class Project : Entity<Guid>
     public virtual ICollection<MetrajResult> MetrajResults { get; set; } = new List<MetrajResult>();
     public virtual ICollection<PuantajRecord> PuantajRecords { get; set; } = new List<PuantajRecord>();
     public virtual ICollection<ContractItem> ContractItems { get; set; } = new List<ContractItem>();
+    public virtual ICollection<ProjectMetrajLayerMapping> MetrajLayerMappings { get; set; } =
+        new List<ProjectMetrajLayerMapping>();
     public virtual ICollection<HakedisPeriod> HakedisPeriods { get; set; } = new List<HakedisPeriod>();
 }

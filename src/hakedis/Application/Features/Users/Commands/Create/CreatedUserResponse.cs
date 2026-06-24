@@ -1,3 +1,4 @@
+using Domain.Enums;
 using NArchitecture.Core.Application.Responses;
 
 namespace Application.Features.Users.Commands.Create;
@@ -9,6 +10,9 @@ public class CreatedUserResponse : IResponse
     public string LastName { get; set; }
     public string Email { get; set; }
     public bool Status { get; set; }
+    public Guid? TenantId { get; set; }
+    public FirmRole? FirmRole { get; set; }
+    public FirmRole? SecondaryFirmRole { get; set; }
 
     public CreatedUserResponse()
     {

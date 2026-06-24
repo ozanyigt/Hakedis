@@ -19,7 +19,7 @@ public class CreatePuantajRecordCommand : IRequest<CreatedPuantajRecordResponse>
     public Guid? SiteId { get; set; }
     public Guid? WorkerId { get; set; }
     public required DateTime WorkDate { get; set; }
-    public required string WorkType { get; set; }
+    public required WorkType WorkType { get; set; }
     public required decimal DayCount { get; set; }
     public required decimal OvertimeHours { get; set; }
     public required PuantajStatus Status { get; set; }

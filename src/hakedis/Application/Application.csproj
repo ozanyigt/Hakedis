@@ -5,10 +5,14 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\Domain\Domain.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="13.0.1" />
+    <PackageReference Include="ClosedXML" Version="0.105.0" />
     <PackageReference Include="MediatR" Version="12.2.0" />
     <PackageReference Include="NArchitecture.Core.Application" Version="1.0.1" />
     <PackageReference Include="NArchitecture.Core.Mailing" Version="1.0.1" />

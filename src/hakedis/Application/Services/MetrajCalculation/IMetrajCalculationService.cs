@@ -6,4 +6,10 @@ public interface IMetrajCalculationService
     MetrajCalculationRequest request,
     CancellationToken cancellationToken = default
   );
+
+  Task<DrawingLayersDiscoveryResultDto> DiscoverLayersAsync(
+    string filePath,
+    string fileExtension,
+    CancellationToken cancellationToken = default
+  );
 }

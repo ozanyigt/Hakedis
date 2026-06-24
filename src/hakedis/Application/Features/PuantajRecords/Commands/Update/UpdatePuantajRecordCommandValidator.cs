@@ -10,7 +10,7 @@ public class UpdatePuantajRecordCommandValidator : AbstractValidator<UpdatePuant
         RuleFor(c => c.TenantId).NotEmpty();
         RuleFor(c => c.ProjectId).NotEmpty();
         RuleFor(c => c.WorkDate).NotEmpty();
-        RuleFor(c => c.WorkType).NotEmpty();
+        RuleFor(c => c.WorkType).IsInEnum();
         RuleFor(c => c.DayCount).NotEmpty();
         RuleFor(c => c.OvertimeHours).NotEmpty();
         RuleFor(c => c.Status).NotEmpty();

@@ -1,4 +1,5 @@
 using Application.Services.MetrajCalculation;
+using Domain;
 using Domain.Enums;
 using netDxf;
 
@@ -6,6 +7,41 @@ namespace Infrastructure.Metraj;
 
 public class NetDxfMetrajCalculationService : IMetrajCalculationService
 {
+  public Task<DrawingLayersDiscoveryResultDto> DiscoverLayersAsync(
+    string filePath,
+    string fileExtension,
+    CancellationToken cancellationToken = default
+  )
+  {
+    if (!DxfLayerMetricsLoader.TryLoad(filePath, fileExtension, out Dictionary<string, LayerEntityMetrics> metrics, out string? errorMessage))
+    {
+      return Task.FromResult(
+        new DrawingLayersDiscoveryResultDto { Success = false, ErrorMessage = errorMessage ?? "Katman listesi okunamadı." }
+      );
+    }
+
+    IList<DrawingLayerItemDto> layers = metrics
+      .Where(pair => pair.Value.EntityCount > 0)
+      .OrderByDescending(pair => pair.Value.ClosedArea + pair.Value.LineLength)
+      .ThenBy(pair => pair.Key, StringComparer.OrdinalIgnoreCase)
+      .Select(pair => new DrawingLayerItemDto
+      {
+        Name = pair.Key,
+        EntityCount = pair.Value.EntityCount,
+        HasClosedArea = pair.Value.ClosedArea > 0,
+        HasLines = pair.Value.LineLength > 0,
+      })
+      .ToList();
+
+    return Task.FromResult(
+      new DrawingLayersDiscoveryResultDto
+      {
+        Success = true,
+        Layers = layers,
+      }
+    );
+  }
+
   public Task<MetrajCalculationResultDto> CalculateAsync(
     MetrajCalculationRequest request,
     CancellationToken cancellationToken = default
@@ -187,7 +223,7 @@ public class NetDxfMetrajCalculationService : IMetrajCalculationService
         {
           Success = false,
           ErrorMessage =
-            "Çizimde eşleşen layer bulunamadı. DUVAR, SIVA, BOYA, MANTO, SAP, KALIP layer isimlerini kontrol edin.",
+            "Çizimde eşleşen layer bulunamadı. Proje katman eşlemesini kontrol edin veya DUVAR, SIVA, BOYA, MANTO, SAP, KALIP layer isimlerini doğrulayın.",
           DrawingUnitNote = unitNote
         };
       }
@@ -303,6 +339,6 @@ public class NetDxfMetrajCalculationService : IMetrajCalculationService
   private static string BuildNote(MetrajKalemRule rule, decimal quantity, decimal openingAreaM2)
   {
     string openingPart = rule.DeductOpenings && openingAreaM2 > 0 ? $" Minha düşümü: {openingAreaM2:F3} m²." : string.Empty;
-    return $"{rule.Description} Hesaplanan: {quantity:F3} {rule.Unit}.{openingPart}";
+    return $"{rule.Description} Hesaplanan: {quantity:F3} {MeasurementUnitDefaults.GetLabel(rule.Unit)}.{openingPart}";
   }
 }

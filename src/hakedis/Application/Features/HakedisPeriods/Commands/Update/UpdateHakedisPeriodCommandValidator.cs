@@ -14,8 +14,7 @@ public class UpdateHakedisPeriodCommandValidator : AbstractValidator<UpdateHaked
         RuleFor(c => c.PeriodStart).NotEmpty();
         RuleFor(c => c.PeriodEnd).NotEmpty();
         RuleFor(c => c.Status).NotEmpty();
-        RuleFor(c => c.TotalAmount).NotEmpty();
-        RuleFor(c => c.DeductionAmount).NotEmpty();
-        RuleFor(c => c.NetAmount).NotEmpty();
+        RuleFor(c => c.TotalAmount).GreaterThanOrEqualTo(0);
+        RuleFor(c => c.DeductionAmount).GreaterThanOrEqualTo(0);
     }
 }

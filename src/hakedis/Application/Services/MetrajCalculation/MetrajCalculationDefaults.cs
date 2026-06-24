@@ -32,7 +32,7 @@ public static class MetrajCalculationDefaults
     new()
     {
       KalemType = MetrajKalemType.Duvar,
-      Unit = "m²",
+      Unit = MeasurementUnit.M2,
       Description =
         "Net duvar alanı: (kapalı alan veya eksen uzunluğu × 2,40 m) − kapı/pencere minha alanları.",
       LayerPatterns =
@@ -58,7 +58,7 @@ public static class MetrajCalculationDefaults
     new()
     {
       KalemType = MetrajKalemType.Siva,
-      Unit = "m²",
+      Unit = MeasurementUnit.M2,
       Description =
         "Sıva alanı: net duvar alanı × 2 yüz (iç mahal). Minha alanları düşülür.",
       LayerPatterns =
@@ -79,7 +79,7 @@ public static class MetrajCalculationDefaults
     new()
     {
       KalemType = MetrajKalemType.Boya,
-      Unit = "m²",
+      Unit = MeasurementUnit.M2,
       Description = "Boya alanı: sıvalı/net duvar yüzeyi (tek yüz). Minha düşülür.",
       LayerPatterns = ["BOYA*", "BOY*", "BOYAMA*", "PAINT*", "A-BOY*", "BADANA*"],
       EntityTypes = ["LwPolyline", "Polyline2D", "Hatch", "Line"],
@@ -91,7 +91,7 @@ public static class MetrajCalculationDefaults
     new()
     {
       KalemType = MetrajKalemType.DisCepheMantolama,
-      Unit = "m²",
+      Unit = MeasurementUnit.M2,
       Description = "Dış cephe mantolama: dış yüzey alanı (m²), pencere minhası düşülür.",
       LayerPatterns =
       [
@@ -113,7 +113,7 @@ public static class MetrajCalculationDefaults
     new()
     {
       KalemType = MetrajKalemType.SapBeton,
-      Unit = "m²",
+      Unit = MeasurementUnit.M2,
       Description = "Şap beton: döşeme/mahal kapalı alanlarının toplamı (m²).",
       LayerPatterns =
       [
@@ -137,7 +137,7 @@ public static class MetrajCalculationDefaults
     new()
     {
       KalemType = MetrajKalemType.Kalip,
-      Unit = "m²",
+      Unit = MeasurementUnit.M2,
       Description =
         "Kalıp: beton temas yüzeyi — kapalı döşeme/kiriş/kolon hatlarından alan (m²).",
       LayerPatterns =

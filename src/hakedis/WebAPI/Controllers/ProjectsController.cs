@@ -1,3 +1,5 @@
+using Application.Features.ProjectMetrajLayerMappings.Commands.Save;
+using Application.Features.ProjectMetrajLayerMappings.Queries.GetByProject;
 using Application.Features.Projects.Commands.Create;
 using Application.Features.Projects.Commands.Delete;
 using Application.Features.Projects.Commands.Update;
@@ -66,6 +68,33 @@ public class ProjectsController : BaseController
     {
         GetListByDynamicProjectQuery getListByDynamicProjectQuery = new() { PageRequest = pageRequest, Dynamic = dynamic };
         GetListResponse<GetListByDynamicProjectListItemDto> response = await Mediator.Send(getListByDynamicProjectQuery);
+        return Ok(response);
+    }
+
+    [HttpGet("{projectId:guid}/metraj-layer-mappings")]
+    public async Task<ActionResult<IReadOnlyList<ProjectMetrajLayerMappingDto>>> GetMetrajLayerMappings(
+        [FromRoute] Guid projectId,
+        CancellationToken cancellationToken
+    )
+    {
+        IReadOnlyList<ProjectMetrajLayerMappingDto> response = await Mediator.Send(
+            new GetProjectMetrajLayerMappingsQuery { ProjectId = projectId },
+            cancellationToken
+        );
+        return Ok(response);
+    }
+
+    [HttpPut("{projectId:guid}/metraj-layer-mappings")]
+    public async Task<ActionResult<IReadOnlyList<ProjectMetrajLayerMappingItemDto>>> SaveMetrajLayerMappings(
+        [FromRoute] Guid projectId,
+        [FromBody] IList<ProjectMetrajLayerMappingItemDto> mappings,
+        CancellationToken cancellationToken
+    )
+    {
+        IReadOnlyList<ProjectMetrajLayerMappingItemDto> response = await Mediator.Send(
+            new SaveProjectMetrajLayerMappingsCommand { ProjectId = projectId, Mappings = mappings },
+            cancellationToken
+        );
         return Ok(response);
     }
 }

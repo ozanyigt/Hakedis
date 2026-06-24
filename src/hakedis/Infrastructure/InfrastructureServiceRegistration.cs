@@ -1,4 +1,4 @@
-﻿using Application.Services.ImageService;
+using Application.Services.ImageService;
 using Application.Services.MetrajCalculation;
 using Infrastructure.Adapters.ImageService;
 using Infrastructure.Metraj;

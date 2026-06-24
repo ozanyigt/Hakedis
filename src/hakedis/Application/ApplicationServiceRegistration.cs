@@ -33,6 +33,9 @@ using Application.Services.PuantajRecords;
 using Application.Services.ContractItems;
 using Application.Services.HakedisPeriods;
 using Application.Services.ProgressEntries;
+using Application.Services.Export;
+using Application.Services.CurrentUser;
+using Application.Services.FirmRoles;
 
 namespace Application;
 
@@ -87,6 +90,10 @@ public static class ApplicationServiceRegistration
         services.AddScoped<IContractItemService, ContractItemManager>();
         services.AddScoped<IHakedisPeriodService, HakedisPeriodManager>();
         services.AddScoped<IProgressEntryService, ProgressEntryManager>();
+        services.AddScoped<IHakedisPeriodTotalsService, HakedisPeriodTotalsService>();
+        services.AddScoped<IExcelExportService, ExcelExportService>();
+        services.AddScoped<ICurrentUserService, CurrentUserService>();
+        services.AddScoped<IFirmRoleAssignmentService, FirmRoleAssignmentService>();
         return services;
     }
 

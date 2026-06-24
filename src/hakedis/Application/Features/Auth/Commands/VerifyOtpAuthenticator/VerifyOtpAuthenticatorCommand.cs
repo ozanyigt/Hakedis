@@ -1,20 +1,18 @@
-﻿using Application.Features.Auth.Rules;
+﻿using Application.Common.Authorization;
+using Application.Features.Auth.Rules;
 using Application.Services.AuthenticatorService;
 using Application.Services.Repositories;
 using Application.Services.UsersService;
 using Domain.Entities;
 using MediatR;
-using NArchitecture.Core.Application.Pipelines.Authorization;
 using NArchitecture.Core.Security.Enums;
 
 namespace Application.Features.Auth.Commands.VerifyOtpAuthenticator;
 
-public class VerifyOtpAuthenticatorCommand : IRequest, ISecuredRequest
+public class VerifyOtpAuthenticatorCommand : IRequest, IAuthenticatedRequest
 {
     public Guid UserId { get; set; }
     public string ActivationCode { get; set; }
-
-    public string[] Roles => [];
 
     public VerifyOtpAuthenticatorCommand()
     {

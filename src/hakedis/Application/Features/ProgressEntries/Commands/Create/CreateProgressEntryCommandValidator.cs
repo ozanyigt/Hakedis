@@ -9,9 +9,8 @@ public class CreateProgressEntryCommandValidator : AbstractValidator<CreateProgr
         RuleFor(c => c.TenantId).NotEmpty();
         RuleFor(c => c.HakedisPeriodId).NotEmpty();
         RuleFor(c => c.ContractItemId).NotEmpty();
-        RuleFor(c => c.QuantityThisPeriod).NotEmpty();
-        RuleFor(c => c.CumulativeQuantity).NotEmpty();
-        RuleFor(c => c.AmountThisPeriod).NotEmpty();
-        RuleFor(c => c.IsManualEntry).NotEmpty();
+        RuleFor(c => c.QuantityThisPeriod).GreaterThanOrEqualTo(0);
+        RuleFor(c => c.CumulativeQuantity).GreaterThanOrEqualTo(0);
+        RuleFor(c => c.AmountThisPeriod).GreaterThanOrEqualTo(0);
     }
 }

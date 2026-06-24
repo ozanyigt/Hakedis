@@ -33,7 +33,7 @@ public class UserOperationClaimConfiguration : IEntityTypeConfiguration<UserOper
         {
             yield return new()
             {
-                Id = Guid.NewGuid(),
+                Id = UserConfiguration.AdminUserOperationClaimId,
                 UserId = UserConfiguration.AdminId,
                 OperationClaimId = OperationClaimConfiguration.AdminId
             };

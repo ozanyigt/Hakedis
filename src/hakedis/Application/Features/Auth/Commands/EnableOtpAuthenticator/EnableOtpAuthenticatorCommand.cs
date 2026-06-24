@@ -1,18 +1,16 @@
-﻿using Application.Features.Auth.Rules;
+﻿using Application.Common.Authorization;
+using Application.Features.Auth.Rules;
 using Application.Services.AuthenticatorService;
 using Application.Services.Repositories;
 using Application.Services.UsersService;
 using Domain.Entities;
 using MediatR;
-using NArchitecture.Core.Application.Pipelines.Authorization;
 
 namespace Application.Features.Auth.Commands.EnableOtpAuthenticator;
 
-public class EnableOtpAuthenticatorCommand : IRequest<EnabledOtpAuthenticatorResponse>, ISecuredRequest
+public class EnableOtpAuthenticatorCommand : IRequest<EnabledOtpAuthenticatorResponse>, IAuthenticatedRequest
 {
     public Guid UserId { get; set; }
-
-    public string[] Roles => [];
 
     public class EnableOtpAuthenticatorCommandHandler
         : IRequestHandler<EnableOtpAuthenticatorCommand, EnabledOtpAuthenticatorResponse>

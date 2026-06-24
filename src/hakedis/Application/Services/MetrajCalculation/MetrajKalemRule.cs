@@ -5,7 +5,7 @@ namespace Application.Services.MetrajCalculation;
 public class MetrajKalemRule
 {
   public MetrajKalemType KalemType { get; set; }
-  public string Unit { get; set; } = "m²";
+  public MeasurementUnit Unit { get; set; } = MeasurementUnit.M2;
   public string[] LayerPatterns { get; set; } = [];
   public string[] EntityTypes { get; set; } = [];
   public MetrajCalculationMethod Method { get; set; }

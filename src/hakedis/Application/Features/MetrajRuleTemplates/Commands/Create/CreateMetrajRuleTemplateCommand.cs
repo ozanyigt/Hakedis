@@ -19,7 +19,7 @@ public class CreateMetrajRuleTemplateCommand : IRequest<CreatedMetrajRuleTemplat
     public required MetrajKalemType KalemType { get; set; }
     public required string LayerPatterns { get; set; }
     public required string EntityTypes { get; set; }
-    public required string Unit { get; set; }
+    public required MeasurementUnit Unit { get; set; }
     public decimal? DefaultThickness { get; set; }
     public decimal? DefaultHeight { get; set; }
     public required bool DeductOpenings { get; set; }

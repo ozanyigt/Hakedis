@@ -11,7 +11,7 @@ public class CreatedMetrajRuleTemplateResponse : IResponse
     public MetrajKalemType KalemType { get; set; }
     public string LayerPatterns { get; set; }
     public string EntityTypes { get; set; }
-    public string Unit { get; set; }
+    public MeasurementUnit Unit { get; set; }
     public decimal? DefaultThickness { get; set; }
     public decimal? DefaultHeight { get; set; }
     public bool DeductOpenings { get; set; }

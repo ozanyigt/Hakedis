@@ -9,7 +9,7 @@ public class ContractItem : Entity<Guid>
     public Guid ProjectId { get; set; }
     public MetrajKalemType KalemType { get; set; }
     public string Description { get; set; } = null!;
-    public string Unit { get; set; } = null!;
+    public MeasurementUnit Unit { get; set; } = MeasurementUnit.M2;
     public decimal UnitPrice { get; set; }
     public decimal? ContractQuantity { get; set; }
     public int SortOrder { get; set; }

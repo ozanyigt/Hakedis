@@ -10,7 +10,7 @@ public class MetrajRuleTemplate : Entity<Guid>
     public MetrajKalemType KalemType { get; set; }
     public string LayerPatterns { get; set; } = null!;
     public string EntityTypes { get; set; } = null!;
-    public string Unit { get; set; } = null!;
+    public MeasurementUnit Unit { get; set; } = MeasurementUnit.M2;
     public decimal? DefaultThickness { get; set; }
     public decimal? DefaultHeight { get; set; }
     public bool DeductOpenings { get; set; }

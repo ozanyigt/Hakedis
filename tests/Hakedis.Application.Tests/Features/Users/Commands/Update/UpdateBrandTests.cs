@@ -1,9 +1,11 @@
 ﻿using Application.Features.Users.Commands.Update;
+using Domain.Enums;
 using FluentValidation.Results;
 using NArchitecture.Core.CrossCuttingConcerns.Exception.Types;
 using NArchitecture.Core.Test.Application.Constants;
 using StarterProject.Application.Tests.Mocks.FakeDatas;
 using StarterProject.Application.Tests.Mocks.Repositories;
+using StarterProject.Application.Tests.Mocks.Services;
 using static Application.Features.Users.Commands.Update.UpdateUserCommand;
 
 namespace StarterProject.Application.Tests.Features.Users.Commands.Update;
@@ -19,7 +21,12 @@ public class UpdateUserTests : UserMockRepository
     {
         _validator = validator;
         _command = command;
-        _handler = new UpdateUserCommandHandler(MockRepository.Object, Mapper, BusinessRules);
+        _handler = new UpdateUserCommandHandler(
+            MockRepository.Object,
+            Mapper,
+            BusinessRules,
+            UserTestMocks.CreateFirmRoleAssignmentService()
+        );
     }
 
     [Fact]
@@ -54,6 +61,7 @@ public class UpdateUserTests : UserMockRepository
         _command.LastName = "Last";
         _command.Email = "test@email.com";
         _command.Password = "password";
+        _command.FirmRole = FirmRole.Puantor;
 
         UpdatedUserResponse result = await _handler.Handle(_command, CancellationToken.None);
 
@@ -68,6 +76,7 @@ public class UpdateUserTests : UserMockRepository
         _command.LastName = "Last";
         _command.Email = "test@email.com";
         _command.Password = "password";
+        _command.FirmRole = FirmRole.Puantor;
 
         async Task Action() => await _handler.Handle(_command, CancellationToken.None);
 

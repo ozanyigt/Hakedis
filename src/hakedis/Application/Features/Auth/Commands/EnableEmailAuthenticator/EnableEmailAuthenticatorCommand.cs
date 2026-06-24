@@ -1,4 +1,5 @@
 ﻿using System.Web;
+using Application.Common.Authorization;
 using Application.Features.Auth.Rules;
 using Application.Services.AuthenticatorService;
 using Application.Services.Repositories;
@@ -6,18 +7,15 @@ using Application.Services.UsersService;
 using Domain.Entities;
 using MediatR;
 using MimeKit;
-using NArchitecture.Core.Application.Pipelines.Authorization;
 using NArchitecture.Core.Mailing;
 using NArchitecture.Core.Security.Enums;
 
 namespace Application.Features.Auth.Commands.EnableEmailAuthenticator;
 
-public class EnableEmailAuthenticatorCommand : IRequest, ISecuredRequest
+public class EnableEmailAuthenticatorCommand : IRequest, IAuthenticatedRequest
 {
     public Guid UserId { get; set; }
     public string VerifyEmailUrlPrefix { get; set; }
-
-    public string[] Roles => [];
 
     public EnableEmailAuthenticatorCommand()
     {

@@ -11,7 +11,7 @@ public class CreatedMetrajResultResponse : IResponse
     public Guid? SiteId { get; set; }
     public Guid DrawingId { get; set; }
     public MetrajKalemType KalemType { get; set; }
-    public string Unit { get; set; }
+    public MeasurementUnit Unit { get; set; }
     public decimal Quantity { get; set; }
     public string? FloorName { get; set; }
     public string? SpaceName { get; set; }

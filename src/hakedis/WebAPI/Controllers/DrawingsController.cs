@@ -5,6 +5,8 @@ using Application.Features.Drawings.Queries.GetById;
 using Application.Features.Drawings.Queries.GetList;
 using Application.Features.Drawings.Queries.GetListByDynamic;
 using Application.Features.MetrajResults.Commands.Calculate;
+using Application.Features.Drawings.Queries.GetLayers;
+using Application.Services.MetrajCalculation;
 using Domain.Enums;
 using NArchitecture.Core.Persistence.Dynamic;
 using NArchitecture.Core.Application.Requests;
@@ -71,6 +73,20 @@ public class DrawingsController : BaseController
     {
         CalculateMetrajResponse response = await Mediator.Send(
             new CalculateMetrajCommand { DrawingId = id },
+            cancellationToken
+        );
+
+        return Ok(response);
+    }
+
+    [HttpGet("{id:guid}/layers")]
+    public async Task<ActionResult<DrawingLayersDiscoveryResultDto>> GetLayers(
+        [FromRoute] Guid id,
+        CancellationToken cancellationToken
+    )
+    {
+        DrawingLayersDiscoveryResultDto response = await Mediator.Send(
+            new GetDrawingLayersQuery { DrawingId = id },
             cancellationToken
         );
 

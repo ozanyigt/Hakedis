@@ -23,4 +23,5 @@ public class HakedisPeriod : Entity<Guid>
     public virtual Project Project { get; set; } = null!;
     public virtual User? ApprovedByUser { get; set; }
     public virtual ICollection<ProgressEntry> ProgressEntries { get; set; } = new List<ProgressEntry>();
+    public virtual ICollection<HakedisDeductionLine> DeductionLines { get; set; } = new List<HakedisDeductionLine>();
 }

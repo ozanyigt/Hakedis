@@ -10,7 +10,7 @@ public class PuantajRecord : Entity<Guid>
     public Guid? SiteId { get; set; }
     public Guid? WorkerId { get; set; }
     public DateTime WorkDate { get; set; }
-    public string WorkType { get; set; } = null!;
+    public WorkType WorkType { get; set; } = WorkType.Gunduz;
     public decimal DayCount { get; set; }
     public decimal OvertimeHours { get; set; }
     public PuantajStatus Status { get; set; } = PuantajStatus.Draft;

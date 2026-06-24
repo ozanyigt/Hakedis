@@ -27,6 +27,8 @@ public class BaseDbContext : DbContext
     public DbSet<ContractItem> ContractItems { get; set; }
     public DbSet<HakedisPeriod> HakedisPeriods { get; set; }
     public DbSet<ProgressEntry> ProgressEntries { get; set; }
+    public DbSet<HakedisDeductionLine> HakedisDeductionLines { get; set; }
+    public DbSet<ProjectMetrajLayerMapping> ProjectMetrajLayerMappings { get; set; }
 
     public BaseDbContext(DbContextOptions dbContextOptions, IConfiguration configuration)
         : base(dbContextOptions)

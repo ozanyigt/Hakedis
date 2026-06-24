@@ -10,5 +10,6 @@ public class CreateUserCommandValidator : AbstractValidator<CreateUserCommand>
         RuleFor(c => c.LastName).NotEmpty().MinimumLength(2);
         RuleFor(c => c.Email).NotEmpty().EmailAddress();
         RuleFor(c => c.Password).NotEmpty().MinimumLength(4);
+        RuleFor(c => c.FirmRole).IsInEnum();
     }
 }

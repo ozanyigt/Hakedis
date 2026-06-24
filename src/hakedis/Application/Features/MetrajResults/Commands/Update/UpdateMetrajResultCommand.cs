@@ -20,7 +20,7 @@ public class UpdateMetrajResultCommand : IRequest<UpdatedMetrajResultResponse>, 
     public Guid? SiteId { get; set; }
     public required Guid DrawingId { get; set; }
     public required MetrajKalemType KalemType { get; set; }
-    public required string Unit { get; set; }
+    public required MeasurementUnit Unit { get; set; }
     public required decimal Quantity { get; set; }
     public string? FloorName { get; set; }
     public string? SpaceName { get; set; }

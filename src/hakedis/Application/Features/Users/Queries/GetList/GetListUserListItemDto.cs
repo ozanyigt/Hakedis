@@ -1,3 +1,4 @@
+using Domain.Enums;
 using NArchitecture.Core.Application.Dtos;
 
 namespace Application.Features.Users.Queries.GetList;
@@ -9,6 +10,9 @@ public class GetListUserListItemDto : IDto
     public string LastName { get; set; }
     public string Email { get; set; }
     public bool Status { get; set; }
+    public Guid? TenantId { get; set; }
+    public FirmRole? FirmRole { get; set; }
+    public FirmRole? SecondaryFirmRole { get; set; }
 
     public GetListUserListItemDto()
     {

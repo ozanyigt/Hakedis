@@ -1,8 +1,14 @@
-﻿namespace Domain.Entities;
+using Domain.Enums;
+
+namespace Domain.Entities;
 
 public class User : NArchitecture.Core.Security.Entities.User<Guid>
 {
+    public string FirstName { get; set; } = string.Empty;
+    public string LastName { get; set; } = string.Empty;
     public Guid? TenantId { get; set; }
+    public FirmRole? FirmRole { get; set; }
+    public FirmRole? SecondaryFirmRole { get; set; }
 
     public virtual Tenant? Tenant { get; set; }
     public virtual ICollection<UserOperationClaim> UserOperationClaims { get; set; } = default!;

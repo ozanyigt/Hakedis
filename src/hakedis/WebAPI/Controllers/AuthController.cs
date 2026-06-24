@@ -1,4 +1,5 @@
-﻿using Application.Features.Auth.Commands.EnableEmailAuthenticator;
+﻿using Application.Features.AppContext.Queries.GetCurrent;
+using Application.Features.Auth.Commands.EnableEmailAuthenticator;
 using Application.Features.Auth.Commands.EnableOtpAuthenticator;
 using Application.Features.Auth.Commands.Login;
 using Application.Features.Auth.Commands.RefreshToken;
@@ -7,6 +8,7 @@ using Application.Features.Auth.Commands.RevokeToken;
 using Application.Features.Auth.Commands.VerifyEmailAuthenticator;
 using Application.Features.Auth.Commands.VerifyOtpAuthenticator;
 using Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using NArchitecture.Core.Application.Dtos;
@@ -25,6 +27,14 @@ public class AuthController : BaseController
         _configuration =
             configuration.GetSection(configurationSection).Get<WebApiConfiguration>()
             ?? throw new NullReferenceException($"\"{configurationSection}\" section cannot found in configuration.");
+    }
+
+    [Authorize]
+    [HttpGet("Context")]
+    public async Task<IActionResult> GetContext([FromQuery] Guid? tenantId)
+    {
+        GetAppContextResponse result = await Mediator.Send(new GetAppContextQuery { TenantId = tenantId });
+        return Ok(result);
     }
 
     [HttpPost("Login")]
@@ -67,6 +77,7 @@ public class AuthController : BaseController
         return Ok(result);
     }
 
+    [Authorize]
     [HttpGet("EnableEmailAuthenticator")]
     public async Task<IActionResult> EnableEmailAuthenticator()
     {
@@ -81,6 +92,7 @@ public class AuthController : BaseController
         return Ok();
     }
 
+    [Authorize]
     [HttpGet("EnableOtpAuthenticator")]
     public async Task<IActionResult> EnableOtpAuthenticator()
     {
@@ -99,6 +111,7 @@ public class AuthController : BaseController
         return Ok();
     }
 
+    [Authorize]
     [HttpPost("VerifyOtpAuthenticator")]
     public async Task<IActionResult> VerifyOtpAuthenticator([FromBody] string authenticatorCode)
     {

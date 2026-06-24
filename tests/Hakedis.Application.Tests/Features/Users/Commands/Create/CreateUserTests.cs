@@ -1,9 +1,11 @@
 ﻿using Application.Features.Users.Commands.Create;
+using Domain.Enums;
 using FluentValidation.Results;
 using NArchitecture.Core.CrossCuttingConcerns.Exception.Types;
 using NArchitecture.Core.Test.Application.Constants;
 using StarterProject.Application.Tests.Mocks.FakeDatas;
 using StarterProject.Application.Tests.Mocks.Repositories;
+using StarterProject.Application.Tests.Mocks.Services;
 using static Application.Features.Users.Commands.Create.CreateUserCommand;
 
 namespace StarterProject.Application.Tests.Features.Users.Commands.Create;
@@ -19,7 +21,12 @@ public class CreateUserTests : UserMockRepository
     {
         _command = command;
         _validator = validator;
-        _handler = new CreateUserCommandHandler(MockRepository.Object, Mapper, BusinessRules);
+        _handler = new CreateUserCommandHandler(
+            MockRepository.Object,
+            Mapper,
+            BusinessRules,
+            UserTestMocks.CreateFirmRoleAssignmentService()
+        );
     }
 
     [Fact]
@@ -56,6 +63,8 @@ public class CreateUserTests : UserMockRepository
         _command.LastName = "Last";
         _command.Email = "test@email.com";
         _command.Password = "password";
+        _command.FirmRole = FirmRole.Puantor;
+        _command.TenantId = Guid.NewGuid();
 
         CreatedUserResponse result = await _handler.Handle(_command, CancellationToken.None);
 
@@ -69,6 +78,8 @@ public class CreateUserTests : UserMockRepository
         _command.LastName = "Last";
         _command.Email = "example@kodlama.io";
         _command.Password = "password";
+        _command.FirmRole = FirmRole.Puantor;
+        _command.TenantId = Guid.NewGuid();
 
         async Task Action() => await _handler.Handle(_command, CancellationToken.None);
 

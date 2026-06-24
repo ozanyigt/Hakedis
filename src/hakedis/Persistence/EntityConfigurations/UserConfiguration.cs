@@ -1,4 +1,4 @@
-﻿using Domain.Entities;
+using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using NArchitecture.Core.Security.Hashing;
@@ -13,10 +13,14 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
 
         builder.Property(u => u.Id).HasColumnName("Id").IsRequired();
         builder.Property(u => u.Email).HasColumnName("Email").IsRequired();
+        builder.Property(u => u.FirstName).HasColumnName("FirstName").IsRequired().HasMaxLength(100);
+        builder.Property(u => u.LastName).HasColumnName("LastName").IsRequired().HasMaxLength(100);
         builder.Property(u => u.PasswordSalt).HasColumnName("PasswordSalt").IsRequired();
         builder.Property(u => u.PasswordHash).HasColumnName("PasswordHash").IsRequired();
         builder.Property(u => u.AuthenticatorType).HasColumnName("AuthenticatorType").IsRequired();
         builder.Property(u => u.TenantId).HasColumnName("TenantId");
+        builder.Property(u => u.FirmRole).HasColumnName("FirmRole");
+        builder.Property(u => u.SecondaryFirmRole).HasColumnName("SecondaryFirmRole");
         builder.Property(u => u.CreatedDate).HasColumnName("CreatedDate").IsRequired();
         builder.Property(u => u.UpdatedDate).HasColumnName("UpdatedDate");
         builder.Property(u => u.DeletedDate).HasColumnName("DeletedDate");
@@ -35,7 +39,8 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.HasBaseType((string)null!);
     }
 
-    public static Guid AdminId { get; } = Guid.NewGuid();
+    public static readonly Guid AdminId = new("dfc3b388-1c0e-4c92-bb77-759140f27e11");
+    public static readonly Guid AdminUserOperationClaimId = new("eac3afcd-86e6-4751-aa8d-608fce4444be");
     private IEnumerable<User> _seeds
     {
         get
@@ -50,6 +55,8 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
                 {
                     Id = AdminId,
                     Email = "narch@kodlama.io",
+                    FirstName = "Admin",
+                    LastName = "User",
                     PasswordHash = passwordHash,
                     PasswordSalt = passwordSalt
                 };
