@@ -75,6 +75,24 @@ public class GetAppContextQuery : IRequest<GetAppContextResponse>, IAuthenticate
                 return new GetAppContextResponse();
             }
 
+            if (!tenant.IsActive)
+            {
+                return new GetAppContextResponse
+                {
+                    IsGlobalAdmin = false,
+                    FirmRole = user.FirmRole.HasValue ? (int)user.FirmRole.Value : null,
+                    SecondaryFirmRole = user.SecondaryFirmRole.HasValue ? (int)user.SecondaryFirmRole.Value : null,
+                    TenantId = tenant.Id,
+                    TenantName = tenant.Name,
+                    EnabledModules = [],
+                    CanSwitchTenant = false,
+                    Tenants =
+                    [
+                        new AppContextTenantItemDto { Id = tenant.Id, Name = tenant.Name },
+                    ],
+                };
+            }
+
             IReadOnlyList<string> accessibleModules = await ResolveAccessibleModulesAsync(user, cancellationToken);
 
             return new GetAppContextResponse
@@ -182,6 +200,12 @@ public class GetAppContextQuery : IRequest<GetAppContextResponse>, IAuthenticate
                 return [];
             }
 
+            if (subscription.EndDate.HasValue && subscription.EndDate.Value < DateTime.UtcNow)
+            {
+                await ExpireSubscriptionIfNeededAsync(subscription, cancellationToken);
+                return [];
+            }
+
             SubscriptionPlan? plan = await _subscriptionPlanRepository.GetAsync(
                 predicate: item => item.Id == subscription.SubscriptionPlanId,
                 enableTracking: false,
@@ -200,6 +224,31 @@ public class GetAppContextQuery : IRequest<GetAppContextResponse>, IAuthenticate
                 .Cast<string>()
                 .Distinct(StringComparer.Ordinal)
                 .ToList();
+        }
+
+        private async Task ExpireSubscriptionIfNeededAsync(
+            Subscription subscription,
+            CancellationToken cancellationToken
+        )
+        {
+            if (!subscription.EndDate.HasValue || subscription.EndDate.Value >= DateTime.UtcNow)
+            {
+                return;
+            }
+
+            Subscription? tracked = await _subscriptionRepository.GetAsync(
+                predicate: item => item.Id == subscription.Id,
+                cancellationToken: cancellationToken
+            );
+
+            if (
+                tracked != null
+                && (tracked.Status == SubscriptionStatus.Active || tracked.Status == SubscriptionStatus.Trial)
+            )
+            {
+                tracked.Status = SubscriptionStatus.Expired;
+                await _subscriptionRepository.UpdateAsync(tracked);
+            }
         }
     }
 }

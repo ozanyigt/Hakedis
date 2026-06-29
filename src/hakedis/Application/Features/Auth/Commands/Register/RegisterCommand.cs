@@ -4,6 +4,7 @@ using Application.Services.Repositories;
 using Domain.Entities;
 using MediatR;
 using NArchitecture.Core.Application.Dtos;
+using NArchitecture.Core.CrossCuttingConcerns.Exception.Types;
 using NArchitecture.Core.Security.Hashing;
 using NArchitecture.Core.Security.JWT;
 
@@ -45,32 +46,9 @@ public class RegisterCommand : IRequest<RegisteredResponse>
 
         public async Task<RegisteredResponse> Handle(RegisterCommand request, CancellationToken cancellationToken)
         {
-            await _authBusinessRules.UserEmailShouldBeNotExists(request.UserForRegisterDto.Email);
-
-            HashingHelper.CreatePasswordHash(
-                request.UserForRegisterDto.Password,
-                passwordHash: out byte[] passwordHash,
-                passwordSalt: out byte[] passwordSalt
+            throw new BusinessException(
+                "Self-service kayıt kapalıdır. Lütfen demo talep formunu kullanın veya platform yöneticinizle iletişime geçin."
             );
-            User newUser =
-                new()
-                {
-                    Email = request.UserForRegisterDto.Email,
-                    PasswordHash = passwordHash,
-                    PasswordSalt = passwordSalt,
-                };
-            User createdUser = await _userRepository.AddAsync(newUser);
-
-            AccessToken createdAccessToken = await _authService.CreateAccessToken(createdUser);
-
-            Domain.Entities.RefreshToken createdRefreshToken = await _authService.CreateRefreshToken(
-                createdUser,
-                request.IpAddress
-            );
-            Domain.Entities.RefreshToken addedRefreshToken = await _authService.AddRefreshToken(createdRefreshToken);
-
-            RegisteredResponse registeredResponse = new() { AccessToken = createdAccessToken, RefreshToken = addedRefreshToken };
-            return registeredResponse;
         }
     }
 }

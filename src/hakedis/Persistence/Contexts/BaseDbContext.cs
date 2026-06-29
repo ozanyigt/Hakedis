@@ -29,6 +29,7 @@ public class BaseDbContext : DbContext
     public DbSet<ProgressEntry> ProgressEntries { get; set; }
     public DbSet<HakedisDeductionLine> HakedisDeductionLines { get; set; }
     public DbSet<ProjectMetrajLayerMapping> ProjectMetrajLayerMappings { get; set; }
+    public DbSet<DemoRequest> DemoRequests { get; set; }
 
     public BaseDbContext(DbContextOptions dbContextOptions, IConfiguration configuration)
         : base(dbContextOptions)

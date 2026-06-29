@@ -37,6 +37,7 @@ public static class PersistenceServiceRegistration
         services.AddScoped<IProgressEntryRepository, ProgressEntryRepository>();
         services.AddScoped<IHakedisDeductionLineRepository, HakedisDeductionLineRepository>();
         services.AddScoped<IProjectMetrajLayerMappingRepository, ProjectMetrajLayerMappingRepository>();
+        services.AddScoped<IDemoRequestRepository, DemoRequestRepository>();
         return services;
     }
 }
