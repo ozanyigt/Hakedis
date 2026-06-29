@@ -81,7 +81,11 @@ builder.Services.AddCors(opt =>
 {
     opt.AddPolicy(
         "HakedisCors",
-        p => p.WithOrigins(allowedOrigins).AllowAnyHeader().AllowAnyMethod().AllowCredentials()
+        p => p.WithOrigins(allowedOrigins) // Mevcut lokal origins listesi
+              .WithOrigins("http://185.22.186.198") // Canlýdaki portsuz frontend adresimiz
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials()
     );
 });
 builder.Services.AddSwaggerGen(opt =>
