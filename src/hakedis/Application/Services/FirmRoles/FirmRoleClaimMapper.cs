@@ -10,6 +10,11 @@ public static class FirmRoleClaimMapper
             FirmRole.FirmaYoneticisi =>
             [
                 "Users.Admin",
+                "Users.Read",
+                "Users.Write",
+                "Users.Create",
+                "Users.Update",
+                "Users.Delete",
                 "Projects.Admin",
                 "Sites.Admin",
                 "PuantajRecords.Admin",

@@ -82,7 +82,7 @@ builder.Services.AddCors(opt =>
     opt.AddPolicy(
         "HakedisCors",
         p => p.WithOrigins(allowedOrigins) // Mevcut lokal origins listesi
-              .WithOrigins("http://185.22.186.198") // Canlýdaki portsuz frontend adresimiz
+              .WithOrigins("http://185.22.186.198") // Canlï¿½daki portsuz frontend adresimiz
               .AllowAnyHeader()
               .AllowAnyMethod()
               .AllowCredentials()
