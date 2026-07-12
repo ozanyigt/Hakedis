@@ -27,7 +27,8 @@ public partial class AddMetrajApprovalAndPolicies : Migration
                 ALTER TABLE dbo.MetrajResults ADD ReviewedByUserId uniqueidentifier NULL;
                 ALTER TABLE dbo.MetrajResults ADD ReviewedAt datetime2 NULL;
 
-                UPDATE dbo.MetrajResults SET GrossQuantity = Quantity WHERE GrossQuantity = 0;
+                -- UPDATE ayrı derlensin (SQL Server batch'te henüz var olmayan kolonu bağlayamaz)
+                EXEC(N'UPDATE dbo.MetrajResults SET GrossQuantity = Quantity WHERE GrossQuantity = 0;');
             END
 
             IF OBJECT_ID(N'dbo.MetrajPolicies', N'U') IS NULL
