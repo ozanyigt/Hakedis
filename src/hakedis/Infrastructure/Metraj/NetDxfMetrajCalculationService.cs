@@ -56,7 +56,7 @@ public class NetDxfMetrajCalculationService : IMetrajCalculationService
         {
           Success = false,
           ErrorMessage =
-            "DWG dosyaları için netDxf desteklenmiyor. DXF yükleyin veya ileride APS Automation entegrasyonu ekleyin."
+            "DWG doğrudan desteklenmiyor. AutoCAD / DWG TrueView / LibreCAD ile 'AutoCAD 2000 DXF' kaydedip yükleyin."
         }
       );
     }

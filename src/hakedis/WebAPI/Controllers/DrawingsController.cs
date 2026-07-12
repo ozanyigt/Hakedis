@@ -19,7 +19,7 @@ namespace WebAPI.Controllers;
 [ApiController]
 public class DrawingsController : BaseController
 {
-    private static readonly HashSet<string> AllowedExtensions = new(StringComparer.OrdinalIgnoreCase) { ".dwg", ".dxf" };
+    private static readonly HashSet<string> AllowedExtensions = new(StringComparer.OrdinalIgnoreCase) { ".dxf" };
 
     [HttpPost("files/upload")]
     [RequestSizeLimit(314_572_800)]
@@ -37,7 +37,7 @@ public class DrawingsController : BaseController
 
         string extension = Path.GetExtension(file.FileName).ToLowerInvariant();
         if (!AllowedExtensions.Contains(extension))
-            return BadRequest(new { message = "Yalnızca DWG veya DXF dosyaları yüklenebilir." });
+            return BadRequest(new { message = "Yalnızca DXF dosyaları yüklenebilir. DWG için AutoCAD / DWG TrueView / LibreCAD ile AutoCAD 2000 DXF olarak kaydedin." });
 
         string uploadsDir = Path.Combine(Directory.GetCurrentDirectory(), "uploads", "drawings");
         Directory.CreateDirectory(uploadsDir);
