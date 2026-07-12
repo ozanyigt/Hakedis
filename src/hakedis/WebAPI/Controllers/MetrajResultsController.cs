@@ -1,3 +1,4 @@
+using Application.Features.MetrajResults.Commands.Approve;
 using Application.Features.MetrajResults.Commands.Create;
 using Application.Features.MetrajResults.Commands.Delete;
 using Application.Features.MetrajResults.Commands.Update;
@@ -28,6 +29,22 @@ public class MetrajResultsController : BaseController
     {
         UpdatedMetrajResultResponse response = await Mediator.Send(command);
 
+        return Ok(response);
+    }
+
+    [HttpPost("approve")]
+    public async Task<ActionResult<ApproveMetrajResultsResponse>> Approve([FromBody] ApproveMetrajResultsCommand command)
+    {
+        try
+        {
+            command.ReviewedByUserId ??= getUserIdFromRequest();
+        }
+        catch
+        {
+            // leave null if claim missing
+        }
+
+        ApproveMetrajResultsResponse response = await Mediator.Send(command);
         return Ok(response);
     }
 

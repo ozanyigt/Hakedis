@@ -18,6 +18,16 @@ public class MetrajResultConfiguration : IEntityTypeConfiguration<MetrajResult>
         builder.Property(mr => mr.KalemType).HasColumnName("KalemType").IsRequired();
         builder.Property(mr => mr.Unit).HasColumnName("Unit").IsRequired();
         builder.Property(mr => mr.Quantity).HasColumnName("Quantity").IsRequired().HasPrecision(18, 4);
+        builder.Property(mr => mr.GrossQuantity).HasColumnName("GrossQuantity").IsRequired().HasPrecision(18, 4);
+        builder.Property(mr => mr.SuggestedQuantity).HasColumnName("SuggestedQuantity").HasPrecision(18, 4);
+        builder.Property(mr => mr.ApprovalStatus).HasColumnName("ApprovalStatus").IsRequired();
+        builder.Property(mr => mr.JudgmentDecision).HasColumnName("JudgmentDecision");
+        builder.Property(mr => mr.JudgmentReason).HasColumnName("JudgmentReason").HasMaxLength(2000);
+        builder.Property(mr => mr.PolicyRef).HasColumnName("PolicyRef").HasMaxLength(50);
+        builder.Property(mr => mr.AiConfidence).HasColumnName("AiConfidence").HasPrecision(5, 4);
+        builder.Property(mr => mr.IsLocked).HasColumnName("IsLocked").IsRequired();
+        builder.Property(mr => mr.ReviewedByUserId).HasColumnName("ReviewedByUserId");
+        builder.Property(mr => mr.ReviewedAt).HasColumnName("ReviewedAt");
         builder.Property(mr => mr.FloorName).HasColumnName("FloorName");
         builder.Property(mr => mr.SpaceName).HasColumnName("SpaceName");
         builder.Property(mr => mr.CalculatedAt).HasColumnName("CalculatedAt").IsRequired();

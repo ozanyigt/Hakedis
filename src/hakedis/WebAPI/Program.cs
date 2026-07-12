@@ -46,7 +46,7 @@ builder.Services.AddApplicationServices(
         ?? throw new InvalidOperationException("TokenOptions section cannot found in configuration.")
 );
 builder.Services.AddPersistenceServices(builder.Configuration);
-builder.Services.AddInfrastructureServices();
+builder.Services.AddInfrastructureServices(builder.Configuration);
 builder.Services.AddHttpContextAccessor();
 
 const string tokenOptionsConfigurationSection = "TokenOptions";
@@ -81,11 +81,13 @@ builder.Services.AddCors(opt =>
 {
     opt.AddPolicy(
         "HakedisCors",
-        p => p.WithOrigins(allowedOrigins) // Mevcut lokal origins listesi
-              .WithOrigins("http://185.22.186.198") // Canl�daki portsuz frontend adresimiz
-              .AllowAnyHeader()
-              .AllowAnyMethod()
-              .AllowCredentials()
+        p =>
+        {
+            p.WithOrigins(allowedOrigins)
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowCredentials();
+        }
     );
 });
 builder.Services.AddSwaggerGen(opt =>

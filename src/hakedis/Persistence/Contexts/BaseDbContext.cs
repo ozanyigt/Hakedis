@@ -22,6 +22,7 @@ public class BaseDbContext : DbContext
     public DbSet<Drawing> Drawings { get; set; }
     public DbSet<MetrajRuleTemplate> MetrajRuleTemplates { get; set; }
     public DbSet<MetrajResult> MetrajResults { get; set; }
+    public DbSet<MetrajPolicy> MetrajPolicies { get; set; }
     public DbSet<Worker> Workers { get; set; }
     public DbSet<PuantajRecord> PuantajRecords { get; set; }
     public DbSet<ContractItem> ContractItems { get; set; }

@@ -129,7 +129,20 @@ public class AuthController : BaseController
 
     private void setRefreshTokenToCookie(RefreshToken refreshToken)
     {
-        CookieOptions cookieOptions = new() { HttpOnly = true, Expires = DateTime.UtcNow.AddDays(7) };
+        bool useCrossSiteCookie = !string.IsNullOrWhiteSpace(_configuration.CookieDomain);
+
+        CookieOptions cookieOptions =
+            new()
+            {
+                HttpOnly = true,
+                Expires = DateTime.UtcNow.AddDays(7),
+                // sahametrik.com ↔ api.sahametrik.com için Secure + SameSite=None gerekir
+                Secure = useCrossSiteCookie,
+                SameSite = useCrossSiteCookie ? SameSiteMode.None : SameSiteMode.Lax,
+                Domain = useCrossSiteCookie ? _configuration.CookieDomain : null,
+                Path = "/"
+            };
+
         Response.Cookies.Append(key: "refreshToken", refreshToken.Token, cookieOptions);
     }
 }

@@ -45,6 +45,12 @@ public class CreateMetrajResultCommand : IRequest<CreatedMetrajResultResponse>, 
         public async Task<CreatedMetrajResultResponse> Handle(CreateMetrajResultCommand request, CancellationToken cancellationToken)
         {
             MetrajResult metrajResult = _mapper.Map<MetrajResult>(request);
+            metrajResult.GrossQuantity = request.Quantity;
+            metrajResult.SuggestedQuantity = request.Quantity;
+            metrajResult.ApprovalStatus = MetrajApprovalStatus.Approved;
+            metrajResult.IsLocked = true;
+            metrajResult.JudgmentDecision = MetrajJudgmentDecision.Count;
+            metrajResult.JudgmentReason = "Manuel kayıt";
 
             await _metrajResultRepository.AddAsync(metrajResult);
 

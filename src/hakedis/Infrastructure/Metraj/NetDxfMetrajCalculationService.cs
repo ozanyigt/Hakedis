@@ -232,7 +232,17 @@ public class NetDxfMetrajCalculationService : IMetrajCalculationService
       {
         Success = true,
         DrawingUnitNote = unitNote,
-        Items = items
+        Items = items,
+        Layers = layerMetrics
+          .Select(pair => new MetrajCalculationLayerDto
+          {
+            Name = pair.Key,
+            EntityCount = pair.Value.EntityCount,
+            ClosedArea = pair.Value.ClosedArea * areaToSquareMeters,
+            LineLength = pair.Value.LineLength * lengthToMeters
+          })
+          .OrderByDescending(layer => layer.ClosedArea + layer.LineLength)
+          .ToList()
       };
     }
     catch (Exception ex)

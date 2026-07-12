@@ -30,6 +30,7 @@ public static class PersistenceServiceRegistration
         services.AddScoped<IDrawingRepository, DrawingRepository>();
         services.AddScoped<IMetrajRuleTemplateRepository, MetrajRuleTemplateRepository>();
         services.AddScoped<IMetrajResultRepository, MetrajResultRepository>();
+        services.AddScoped<IMetrajPolicyRepository, MetrajPolicyRepository>();
         services.AddScoped<IWorkerRepository, WorkerRepository>();
         services.AddScoped<IPuantajRecordRepository, PuantajRecordRepository>();
         services.AddScoped<IContractItemRepository, ContractItemRepository>();
