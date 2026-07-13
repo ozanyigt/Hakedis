@@ -12,6 +12,8 @@ using NArchitecture.Core.Application.Responses;
 using NArchitecture.Core.Persistence.Dynamic;
 using NArchitecture.Core.Persistence.Paging;
 using static Application.Features.PuantajRecords.Constants.PuantajRecordsOperationClaims;
+using Application.Services.CurrentUser;
+using NArchitecture.Core.CrossCuttingConcerns.Exception.Types;
 
 namespace Application.Features.PuantajRecords.Queries.GetListByDynamic;
 
@@ -28,15 +30,21 @@ public class GetListByDynamicPuantajRecordQuery : IRequest<GetListResponse<GetLi
     {
         private readonly IPuantajRecordRepository _puantajRecordRepository;
         private readonly IMapper _mapper;
+        private readonly ICurrentUserService _currentUserService;
 
-        public GetListByDynamicPuantajRecordQueryHandler(IPuantajRecordRepository puantajRecordRepository, IMapper mapper)
+        public GetListByDynamicPuantajRecordQueryHandler(
+            IPuantajRecordRepository puantajRecordRepository, IMapper mapper, ICurrentUserService currentUserService)
         {
             _puantajRecordRepository = puantajRecordRepository;
             _mapper = mapper;
+            _currentUserService = currentUserService;
         }
 
         public async Task<GetListResponse<GetListByDynamicPuantajRecordListItemDto>> Handle(GetListByDynamicPuantajRecordQuery request, CancellationToken cancellationToken)
         {
+            if (!_currentUserService.IsGlobalAdmin)
+                throw new BusinessException(
+                    "Dynamic Puantaj queries are restricted to global administrators; use the tenant-scoped list endpoint.");
             IPaginate<PuantajRecord> puantajRecords = await _puantajRecordRepository.GetListByDynamicAsync(
                 dynamic: request.Dynamic,
                 index: request.PageRequest.PageIndex,

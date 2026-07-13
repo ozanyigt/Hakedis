@@ -1,5 +1,4 @@
 using Application.Features.PuantajRecords.Constants;
-using Application.Features.PuantajRecords.Constants;
 using Application.Features.PuantajRecords.Rules;
 using Application.Services.Repositories;
 using AutoMapper;
@@ -15,6 +14,7 @@ namespace Application.Features.PuantajRecords.Commands.Delete;
 public class DeletePuantajRecordCommand : IRequest<DeletedPuantajRecordResponse>, ISecuredRequest, ILoggableRequest, ITransactionalRequest
 {
     public Guid Id { get; set; }
+    public Guid? TenantId { get; set; }
 
     public string[] Roles => [Admin, Write, PuantajRecordsOperationClaims.Delete];
 
@@ -34,10 +34,10 @@ public class DeletePuantajRecordCommand : IRequest<DeletedPuantajRecordResponse>
 
         public async Task<DeletedPuantajRecordResponse> Handle(DeletePuantajRecordCommand request, CancellationToken cancellationToken)
         {
-            PuantajRecord? puantajRecord = await _puantajRecordRepository.GetAsync(predicate: pr => pr.Id == request.Id, cancellationToken: cancellationToken);
-            await _puantajRecordBusinessRules.PuantajRecordShouldExistWhenSelected(puantajRecord);
+            PuantajRecord puantajRecord = await _puantajRecordBusinessRules.GetScopedAsync(
+                request.Id, request.TenantId, cancellationToken);
 
-            await _puantajRecordRepository.DeleteAsync(puantajRecord!);
+            await _puantajRecordRepository.DeleteAsync(puantajRecord);
 
             DeletedPuantajRecordResponse response = _mapper.Map<DeletedPuantajRecordResponse>(puantajRecord);
             return response;

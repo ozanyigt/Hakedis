@@ -19,6 +19,8 @@ using Application.Features.PuantajRecords.Constants;
 using Application.Features.ContractItems.Constants;
 using Application.Features.HakedisPeriods.Constants;
 using Application.Features.ProgressEntries.Constants;
+using Application.Features.DailySiteReports.Constants;
+using Application.Features.Inventory;
 
 
 
@@ -327,6 +329,32 @@ public class OperationClaimConfiguration : IEntityTypeConfiguration<OperationCla
                 new() { Id = ++lastId, Name = "ProgressEntries.Create" },
                 new() { Id = ++lastId, Name = "ProgressEntries.Update" },
                 new() { Id = ++lastId, Name = "ProgressEntries.Delete" },
+            ]
+        );
+        #endregion
+
+        #region DailySiteReports CRUD (Puantaj module)
+        featureOperationClaims.AddRange(
+            [
+                new() { Id = ++lastId, Name = DailySiteReportsOperationClaims.Admin },
+                new() { Id = ++lastId, Name = DailySiteReportsOperationClaims.Read },
+                new() { Id = ++lastId, Name = DailySiteReportsOperationClaims.Write },
+                new() { Id = ++lastId, Name = DailySiteReportsOperationClaims.Create },
+                new() { Id = ++lastId, Name = DailySiteReportsOperationClaims.Update },
+                new() { Id = ++lastId, Name = DailySiteReportsOperationClaims.Delete },
+            ]
+        );
+        #endregion
+
+        #region Inventory CRUD
+        featureOperationClaims.AddRange(
+            [
+                new() { Id = ++lastId, Name = InventoryOperationClaims.Admin },
+                new() { Id = ++lastId, Name = InventoryOperationClaims.Read },
+                new() { Id = ++lastId, Name = InventoryOperationClaims.Write },
+                new() { Id = ++lastId, Name = InventoryOperationClaims.Create },
+                new() { Id = ++lastId, Name = InventoryOperationClaims.Update },
+                new() { Id = ++lastId, Name = InventoryOperationClaims.Delete },
             ]
         );
         #endregion

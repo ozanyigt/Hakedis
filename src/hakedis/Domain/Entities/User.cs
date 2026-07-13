@@ -16,5 +16,7 @@ public class User : NArchitecture.Core.Security.Entities.User<Guid>
     public virtual ICollection<OtpAuthenticator> OtpAuthenticators { get; set; } = default!;
     public virtual ICollection<EmailAuthenticator> EmailAuthenticators { get; set; } = default!;
     public virtual ICollection<PuantajRecord> ApprovedPuantajRecords { get; set; } = new List<PuantajRecord>();
+    public virtual ICollection<DailySiteReport> CreatedDailySiteReports { get; set; } = new List<DailySiteReport>();
+    public virtual ICollection<DailySiteReport> ApprovedDailySiteReports { get; set; } = new List<DailySiteReport>();
     public virtual ICollection<HakedisPeriod> ApprovedHakedisPeriods { get; set; } = new List<HakedisPeriod>();
 }

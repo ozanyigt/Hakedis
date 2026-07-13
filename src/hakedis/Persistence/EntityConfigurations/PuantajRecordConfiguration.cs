@@ -28,6 +28,9 @@ public class PuantajRecordConfiguration : IEntityTypeConfiguration<PuantajRecord
         builder.Property(pr => pr.DeletedDate).HasColumnName("DeletedDate");
 
         builder.HasQueryFilter(pr => !pr.DeletedDate.HasValue);
+        builder.HasIndex(pr => new { pr.TenantId, pr.ProjectId, pr.SiteId, pr.WorkerId, pr.WorkDate })
+            .IsUnique()
+            .HasFilter("[WorkerId] IS NOT NULL AND [DeletedDate] IS NULL");
 
         builder.HasOne(pr => pr.Tenant).WithMany().HasForeignKey(pr => pr.TenantId).OnDelete(DeleteBehavior.NoAction);
         builder.HasOne(pr => pr.Project).WithMany(p => p.PuantajRecords).HasForeignKey(pr => pr.ProjectId).OnDelete(DeleteBehavior.Cascade);

@@ -18,6 +18,8 @@ public static class FirmRoleClaimMapper
                 "Projects.Admin",
                 "Sites.Admin",
                 "PuantajRecords.Admin",
+                "DailySiteReports.Admin",
+                "Inventory.Admin",
                 "Workers.Admin",
                 "MetrajResults.Admin",
                 "MetrajRuleTemplates.Admin",
@@ -34,6 +36,8 @@ public static class FirmRoleClaimMapper
                 "Sites.Create",
                 "Sites.Update",
                 "PuantajRecords.Admin",
+                "DailySiteReports.Admin",
+                "Inventory.Admin",
                 "Workers.Admin",
             ],
             FirmRole.Puantor =>
@@ -44,6 +48,11 @@ public static class FirmRoleClaimMapper
                 "PuantajRecords.Write",
                 "PuantajRecords.Create",
                 "PuantajRecords.Update",
+                "DailySiteReports.Read",
+                "DailySiteReports.Write",
+                "DailySiteReports.Create",
+                "DailySiteReports.Update",
+                "Inventory.Read",
                 "Workers.Read",
             ],
             FirmRole.MetrajMuhendisi =>
@@ -56,6 +65,7 @@ public static class FirmRoleClaimMapper
                 "Drawings.Write",
                 "Drawings.Create",
                 "Drawings.Update",
+                "DailySiteReports.Read",
             ],
             FirmRole.HakedisMuhasebe =>
             [
@@ -63,12 +73,14 @@ public static class FirmRoleClaimMapper
                 "HakedisPeriods.Admin",
                 "ContractItems.Admin",
                 "ProgressEntries.Admin",
+                "Inventory.Read",
             ],
             FirmRole.SaltOkunur =>
             [
                 "Projects.Read",
                 "Sites.Read",
                 "PuantajRecords.Read",
+                "DailySiteReports.Read",
                 "MetrajResults.Read",
                 "MetrajRuleTemplates.Read",
                 "Drawings.Read",
@@ -76,6 +88,7 @@ public static class FirmRoleClaimMapper
                 "HakedisPeriods.Read",
                 "ContractItems.Read",
                 "ProgressEntries.Read",
+                "Inventory.Read",
             ],
             _ => [],
         };

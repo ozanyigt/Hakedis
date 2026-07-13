@@ -21,6 +21,7 @@ public class Project : Entity<Guid>
     public virtual ICollection<Drawing> Drawings { get; set; } = new List<Drawing>();
     public virtual ICollection<MetrajResult> MetrajResults { get; set; } = new List<MetrajResult>();
     public virtual ICollection<PuantajRecord> PuantajRecords { get; set; } = new List<PuantajRecord>();
+    public virtual ICollection<DailySiteReport> DailySiteReports { get; set; } = new List<DailySiteReport>();
     public virtual ICollection<ContractItem> ContractItems { get; set; } = new List<ContractItem>();
     public virtual ICollection<ProjectMetrajLayerMapping> MetrajLayerMappings { get; set; } =
         new List<ProjectMetrajLayerMapping>();

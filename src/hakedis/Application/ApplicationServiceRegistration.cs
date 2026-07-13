@@ -36,6 +36,7 @@ using Application.Services.ProgressEntries;
 using Application.Services.Export;
 using Application.Services.CurrentUser;
 using Application.Services.FirmRoles;
+using Application.Features.DailySiteReports;
 
 namespace Application;
 
@@ -94,6 +95,7 @@ public static class ApplicationServiceRegistration
         services.AddScoped<IExcelExportService, ExcelExportService>();
         services.AddScoped<ICurrentUserService, CurrentUserService>();
         services.AddScoped<IFirmRoleAssignmentService, FirmRoleAssignmentService>();
+        services.AddScoped<DailySiteReportSnapshotService>();
         return services;
     }
 

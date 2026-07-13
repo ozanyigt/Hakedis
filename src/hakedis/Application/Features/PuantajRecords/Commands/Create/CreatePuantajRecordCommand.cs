@@ -45,7 +45,15 @@ public class CreatePuantajRecordCommand : IRequest<CreatedPuantajRecordResponse>
 
         public async Task<CreatedPuantajRecordResponse> Handle(CreatePuantajRecordCommand request, CancellationToken cancellationToken)
         {
+            Guid tenantId = (await _puantajRecordBusinessRules.ResolveTenantAsync(
+                request.TenantId, true, cancellationToken))!.Value;
+            await _puantajRecordBusinessRules.ValidateScopeAsync(
+                tenantId, request.ProjectId, request.SiteId, request.WorkerId, cancellationToken);
+            await _puantajRecordBusinessRules.EnsureUniqueWorkerDayAsync(
+                tenantId, request.ProjectId, request.SiteId, request.WorkerId, request.WorkDate,
+                null, cancellationToken);
             PuantajRecord puantajRecord = _mapper.Map<PuantajRecord>(request);
+            puantajRecord.TenantId = tenantId;
 
             await _puantajRecordRepository.AddAsync(puantajRecord);
 

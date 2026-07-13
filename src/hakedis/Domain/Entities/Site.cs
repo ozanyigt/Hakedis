@@ -18,4 +18,5 @@ public class Site : Entity<Guid>
     public virtual ICollection<Drawing> Drawings { get; set; } = new List<Drawing>();
     public virtual ICollection<MetrajResult> MetrajResults { get; set; } = new List<MetrajResult>();
     public virtual ICollection<PuantajRecord> PuantajRecords { get; set; } = new List<PuantajRecord>();
+    public virtual ICollection<DailySiteReport> DailySiteReports { get; set; } = new List<DailySiteReport>();
 }

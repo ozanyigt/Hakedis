@@ -5,6 +5,8 @@ using Microsoft.Extensions.DependencyInjection;
 using NArchitecture.Core.Persistence.DependencyInjection;
 using Persistence.Contexts;
 using Persistence.Repositories;
+using Application.Services.Inventory;
+using Persistence.Services;
 
 namespace Persistence;
 
@@ -33,6 +35,14 @@ public static class PersistenceServiceRegistration
         services.AddScoped<IMetrajPolicyRepository, MetrajPolicyRepository>();
         services.AddScoped<IWorkerRepository, WorkerRepository>();
         services.AddScoped<IPuantajRecordRepository, PuantajRecordRepository>();
+        services.AddScoped<IDailySiteReportRepository, DailySiteReportRepository>();
+        services.AddScoped<IDailySiteReportPhotoRepository, DailySiteReportPhotoRepository>();
+        services.AddScoped<IDailySiteReportWorkforceSnapshotRepository, DailySiteReportWorkforceSnapshotRepository>();
+        services.AddScoped<IDailySiteReportMaterialLineRepository, DailySiteReportMaterialLineRepository>();
+        services.AddScoped<IMaterialRepository, MaterialRepository>();
+        services.AddScoped<ISiteStockBalanceRepository, SiteStockBalanceRepository>();
+        services.AddScoped<IStockTransactionRepository, StockTransactionRepository>();
+        services.AddScoped<IStockPostingService, StockPostingService>();
         services.AddScoped<IContractItemRepository, ContractItemRepository>();
         services.AddScoped<IHakedisPeriodRepository, HakedisPeriodRepository>();
         services.AddScoped<IProgressEntryRepository, ProgressEntryRepository>();

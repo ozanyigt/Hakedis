@@ -85,6 +85,342 @@ namespace Persistence.Migrations
                     b.ToTable("ContractItems", (string)null);
                 });
 
+            modelBuilder.Entity("Domain.Entities.DailySiteReport", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("ApprovedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("ApprovedByUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("BlockersNotes")
+                        .HasMaxLength(4000)
+                        .HasColumnType("nvarchar(4000)");
+
+                    b.Property<Guid>("CreatedByUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("EquipmentNotes")
+                        .HasMaxLength(4000)
+                        .HasColumnType("nvarchar(4000)");
+
+                    b.Property<string>("MaterialNotes")
+                        .HasMaxLength(4000)
+                        .HasColumnType("nvarchar(4000)");
+
+                    b.Property<decimal?>("MaxTemperatureCelsius")
+                        .HasPrecision(5, 2)
+                        .HasColumnType("decimal(5,2)");
+
+                    b.Property<decimal?>("MinTemperatureCelsius")
+                        .HasPrecision(5, 2)
+                        .HasColumnType("decimal(5,2)");
+
+                    b.Property<string>("Notes")
+                        .HasMaxLength(4000)
+                        .HasColumnType("nvarchar(4000)");
+
+                    b.Property<Guid>("ProjectId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("RejectionReason")
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<DateTime>("ReportDate")
+                        .HasColumnType("date");
+
+                    b.Property<Guid>("SiteId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("TenantId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Weather")
+                        .HasColumnType("int");
+
+                    b.Property<string>("WorkSummary")
+                        .IsRequired()
+                        .HasMaxLength(4000)
+                        .HasColumnType("nvarchar(4000)");
+
+                    b.Property<string>("WorkforceNotes")
+                        .HasMaxLength(4000)
+                        .HasColumnType("nvarchar(4000)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApprovedByUserId");
+
+                    b.HasIndex("CreatedByUserId");
+
+                    b.HasIndex("ProjectId");
+
+                    b.HasIndex("SiteId");
+
+                    b.HasIndex("TenantId", "SiteId", "ReportDate")
+                        .IsUnique()
+                        .HasDatabaseName("UX_DailySiteReports_Tenant_Site_Date_Active")
+                        .HasFilter("[DeletedDate] IS NULL");
+
+                    b.ToTable("DailySiteReports", (string)null);
+                });
+
+            modelBuilder.Entity("Domain.Entities.DailySiteReportMaterialLine", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("DailySiteReportId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("MaterialCode")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<Guid>("MaterialId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("MaterialName")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("Notes")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<decimal?>("PostedTotalCost")
+                        .HasPrecision(18, 6)
+                        .HasColumnType("decimal(18,6)");
+
+                    b.Property<decimal?>("PostedUnitCost")
+                        .HasPrecision(18, 6)
+                        .HasColumnType("decimal(18,6)");
+
+                    b.Property<decimal>("Quantity")
+                        .HasPrecision(18, 4)
+                        .HasColumnType("decimal(18,4)");
+
+                    b.Property<string>("Unit")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MaterialId");
+
+                    b.HasIndex("DailySiteReportId", "MaterialId")
+                        .IsUnique()
+                        .HasFilter("[DeletedDate] IS NULL");
+
+                    b.ToTable("DailySiteReportMaterialLines", (string)null);
+                });
+
+            modelBuilder.Entity("Domain.Entities.DailySiteReportPhoto", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ContentType")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("DailySiteReportId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("FileName")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<long>("SizeBytes")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("SortOrder")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Url")
+                        .IsRequired()
+                        .HasMaxLength(2048)
+                        .HasColumnType("nvarchar(2048)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DailySiteReportId");
+
+                    b.ToTable("DailySiteReportPhotos", (string)null);
+                });
+
+            modelBuilder.Entity("Domain.Entities.DailySiteReportWorkforceSnapshot", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CaptureBatchId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CapturedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("DailySiteReportId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("DayCount")
+                        .HasPrecision(18, 4)
+                        .HasColumnType("decimal(18,4)");
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<decimal>("OvertimeHours")
+                        .HasPrecision(18, 4)
+                        .HasColumnType("decimal(18,4)");
+
+                    b.Property<int>("PuantajStatusAtCapture")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("SourcePuantajRecordId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Trade")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("WorkType")
+                        .HasColumnType("int");
+
+                    b.Property<Guid?>("WorkerId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("WorkerName")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DailySiteReportId", "CaptureBatchId");
+
+                    b.HasIndex("DailySiteReportId", "SourcePuantajRecordId")
+                        .IsUnique();
+
+                    b.ToTable("DailySiteReportWorkforceSnapshots", (string)null);
+                });
+
+            modelBuilder.Entity("Domain.Entities.DemoRequest", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("Id");
+
+                    b.Property<string>("CompanyName")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)")
+                        .HasColumnName("CompanyName");
+
+                    b.Property<string>("ContactName")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)")
+                        .HasColumnName("ContactName");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("CreatedDate");
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("DeletedDate");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)")
+                        .HasColumnName("Email");
+
+                    b.Property<string>("Interest")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("Interest");
+
+                    b.Property<string>("Message")
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)")
+                        .HasColumnName("Message");
+
+                    b.Property<string>("Phone")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("Phone");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int")
+                        .HasColumnName("Status");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("UpdatedDate");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("DemoRequests", (string)null);
+                });
+
             modelBuilder.Entity("Domain.Entities.Drawing", b =>
                 {
                     b.Property<Guid>("Id")
@@ -337,12 +673,126 @@ namespace Persistence.Migrations
                     b.ToTable("HakedisPeriods", (string)null);
                 });
 
+            modelBuilder.Entity("Domain.Entities.Material", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<Guid>("TenantId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Unit")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TenantId", "Code")
+                        .IsUnique()
+                        .HasFilter("[DeletedDate] IS NULL");
+
+                    b.ToTable("Materials", (string)null);
+                });
+
+            modelBuilder.Entity("Domain.Entities.MetrajPolicy", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("Id");
+
+                    b.Property<string>("Body")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("Body");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("Code");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("CreatedDate");
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("DeletedDate");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit")
+                        .HasColumnName("IsActive");
+
+                    b.Property<Guid>("TenantId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("TenantId");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)")
+                        .HasColumnName("Title");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("UpdatedDate");
+
+                    b.Property<int>("Version")
+                        .HasColumnType("int")
+                        .HasColumnName("Version");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TenantId", "Code")
+                        .IsUnique();
+
+                    b.ToTable("MetrajPolicies", (string)null);
+                });
+
             modelBuilder.Entity("Domain.Entities.MetrajResult", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("Id");
+
+                    b.Property<decimal?>("AiConfidence")
+                        .HasPrecision(5, 4)
+                        .HasColumnType("decimal(5,4)")
+                        .HasColumnName("AiConfidence");
+
+                    b.Property<int>("ApprovalStatus")
+                        .HasColumnType("int")
+                        .HasColumnName("ApprovalStatus");
 
                     b.Property<DateTime>("CalculatedAt")
                         .HasColumnType("datetime2")
@@ -364,6 +814,24 @@ namespace Persistence.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("FloorName");
 
+                    b.Property<decimal>("GrossQuantity")
+                        .HasPrecision(18, 4)
+                        .HasColumnType("decimal(18,4)")
+                        .HasColumnName("GrossQuantity");
+
+                    b.Property<bool>("IsLocked")
+                        .HasColumnType("bit")
+                        .HasColumnName("IsLocked");
+
+                    b.Property<int?>("JudgmentDecision")
+                        .HasColumnType("int")
+                        .HasColumnName("JudgmentDecision");
+
+                    b.Property<string>("JudgmentReason")
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)")
+                        .HasColumnName("JudgmentReason");
+
                     b.Property<int>("KalemType")
                         .HasColumnType("int")
                         .HasColumnName("KalemType");
@@ -371,6 +839,11 @@ namespace Persistence.Migrations
                     b.Property<string>("Notes")
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("Notes");
+
+                    b.Property<string>("PolicyRef")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("PolicyRef");
 
                     b.Property<Guid>("ProjectId")
                         .HasColumnType("uniqueidentifier")
@@ -381,6 +854,14 @@ namespace Persistence.Migrations
                         .HasColumnType("decimal(18,4)")
                         .HasColumnName("Quantity");
 
+                    b.Property<DateTime?>("ReviewedAt")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("ReviewedAt");
+
+                    b.Property<Guid?>("ReviewedByUserId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("ReviewedByUserId");
+
                     b.Property<Guid?>("SiteId")
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("SiteId");
@@ -388,6 +869,11 @@ namespace Persistence.Migrations
                     b.Property<string>("SpaceName")
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("SpaceName");
+
+                    b.Property<decimal?>("SuggestedQuantity")
+                        .HasPrecision(18, 4)
+                        .HasColumnType("decimal(18,4)")
+                        .HasColumnName("SuggestedQuantity");
 
                     b.Property<Guid>("TenantId")
                         .HasColumnType("uniqueidentifier")
@@ -1129,6 +1615,78 @@ namespace Persistence.Migrations
                             Id = 101,
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "ProgressEntries.Delete"
+                        },
+                        new
+                        {
+                            Id = 102,
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "DailySiteReports.Admin"
+                        },
+                        new
+                        {
+                            Id = 103,
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "DailySiteReports.Read"
+                        },
+                        new
+                        {
+                            Id = 104,
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "DailySiteReports.Write"
+                        },
+                        new
+                        {
+                            Id = 105,
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "DailySiteReports.Create"
+                        },
+                        new
+                        {
+                            Id = 106,
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "DailySiteReports.Update"
+                        },
+                        new
+                        {
+                            Id = 107,
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "DailySiteReports.Delete"
+                        },
+                        new
+                        {
+                            Id = 108,
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Inventory.Admin"
+                        },
+                        new
+                        {
+                            Id = 109,
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Inventory.Read"
+                        },
+                        new
+                        {
+                            Id = 110,
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Inventory.Write"
+                        },
+                        new
+                        {
+                            Id = 111,
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Inventory.Create"
+                        },
+                        new
+                        {
+                            Id = 112,
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Inventory.Update"
+                        },
+                        new
+                        {
+                            Id = 113,
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Inventory.Delete"
                         });
                 });
 
@@ -1310,6 +1868,52 @@ namespace Persistence.Migrations
                     b.ToTable("Projects", (string)null);
                 });
 
+            modelBuilder.Entity("Domain.Entities.ProjectMetrajLayerMapping", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("Id");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("CreatedDate");
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("DeletedDate");
+
+                    b.Property<int>("KalemType")
+                        .HasColumnType("int")
+                        .HasColumnName("KalemType");
+
+                    b.Property<string>("LayerNames")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("LayerNames");
+
+                    b.Property<Guid>("ProjectId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("ProjectId");
+
+                    b.Property<Guid>("TenantId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("TenantId");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("UpdatedDate");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TenantId");
+
+                    b.HasIndex("ProjectId", "KalemType")
+                        .IsUnique();
+
+                    b.ToTable("ProjectMetrajLayerMappings", (string)null);
+                });
+
             modelBuilder.Entity("Domain.Entities.PuantajRecord", b =>
                 {
                     b.Property<Guid>("Id")
@@ -1387,9 +1991,11 @@ namespace Persistence.Migrations
 
                     b.HasIndex("SiteId");
 
-                    b.HasIndex("TenantId");
-
                     b.HasIndex("WorkerId");
+
+                    b.HasIndex("TenantId", "ProjectId", "SiteId", "WorkerId", "WorkDate")
+                        .IsUnique()
+                        .HasFilter("[WorkerId] IS NOT NULL AND [DeletedDate] IS NULL");
 
                     b.ToTable("PuantajRecords", (string)null);
                 });
@@ -1509,6 +2115,149 @@ namespace Persistence.Migrations
                     b.HasIndex("TenantId");
 
                     b.ToTable("Sites", (string)null);
+                });
+
+            modelBuilder.Entity("Domain.Entities.SiteStockBalance", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("AverageUnitCost")
+                        .HasPrecision(18, 6)
+                        .HasColumnType("decimal(18,6)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("MaterialId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("Quantity")
+                        .HasPrecision(18, 4)
+                        .HasColumnType("decimal(18,4)");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .IsRequired()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<Guid>("SiteId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("TenantId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MaterialId");
+
+                    b.HasIndex("SiteId");
+
+                    b.HasIndex("TenantId", "SiteId", "MaterialId")
+                        .IsUnique()
+                        .HasFilter("[DeletedDate] IS NULL");
+
+                    b.ToTable("SiteStockBalances", (string)null);
+                });
+
+            modelBuilder.Entity("Domain.Entities.StockTransaction", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("AverageUnitCostAfter")
+                        .HasPrecision(18, 6)
+                        .HasColumnType("decimal(18,6)");
+
+                    b.Property<decimal>("BalanceQuantityAfter")
+                        .HasPrecision(18, 4)
+                        .HasColumnType("decimal(18,4)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("IdempotencyKey")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<Guid>("MaterialId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("MovementType")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Notes")
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<DateTime>("OccurredAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("PostedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("PostedByUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("Quantity")
+                        .HasPrecision(18, 4)
+                        .HasColumnType("decimal(18,4)");
+
+                    b.Property<string>("Reference")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<Guid?>("ReferenceId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("ReferenceType")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("SiteId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("TenantId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("TotalCost")
+                        .HasPrecision(18, 6)
+                        .HasColumnType("decimal(18,6)");
+
+                    b.Property<Guid?>("TransferId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("UnitCost")
+                        .HasPrecision(18, 6)
+                        .HasColumnType("decimal(18,6)");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MaterialId");
+
+                    b.HasIndex("SiteId");
+
+                    b.HasIndex("TenantId", "IdempotencyKey")
+                        .IsUnique();
+
+                    b.HasIndex("TenantId", "SiteId", "MaterialId", "OccurredAt");
+
+                    b.ToTable("StockTransactions", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.Subscription", b =>
@@ -1762,8 +2511,8 @@ namespace Persistence.Migrations
                             Email = "narch@kodlama.io",
                             FirstName = "Admin",
                             LastName = "User",
-                            PasswordHash = new byte[] { 115, 118, 94, 85, 174, 33, 147, 175, 91, 96, 136, 203, 181, 140, 255, 52, 223, 195, 145, 99, 160, 50, 203, 182, 175, 190, 198, 209, 113, 204, 231, 213, 73, 26, 221, 116, 148, 150, 33, 111, 232, 89, 224, 43, 46, 157, 157, 170, 25, 234, 129, 139, 105, 45, 199, 183, 16, 195, 229, 142, 88, 232, 157, 234 },
-                            PasswordSalt = new byte[] { 148, 168, 22, 69, 85, 174, 185, 212, 81, 13, 189, 223, 227, 194, 46, 75, 91, 252, 81, 185, 190, 75, 194, 162, 223, 179, 255, 99, 236, 246, 26, 99, 49, 142, 119, 10, 27, 117, 74, 133, 124, 7, 150, 67, 95, 16, 14, 217, 96, 168, 177, 187, 73, 151, 103, 93, 175, 91, 226, 163, 36, 9, 136, 173, 185, 51, 46, 179, 130, 10, 26, 192, 156, 139, 153, 189, 151, 134, 8, 25, 217, 56, 111, 118, 91, 242, 7, 45, 112, 159, 14, 246, 95, 176, 62, 90, 44, 235, 192, 53, 50, 191, 39, 154, 246, 162, 236, 213, 224, 239, 123, 215, 183, 58, 15, 100, 166, 236, 197, 156, 47, 96, 41, 135, 177, 100, 215, 165 }
+                            PasswordHash = new byte[] { 110, 148, 81, 198, 239, 152, 201, 207, 94, 163, 235, 132, 150, 187, 199, 97, 128, 200, 48, 103, 107, 170, 61, 80, 236, 147, 56, 254, 63, 234, 148, 32, 34, 242, 139, 129, 172, 119, 204, 143, 255, 184, 78, 17, 138, 210, 39, 17, 17, 31, 164, 47, 174, 8, 245, 160, 188, 180, 176, 253, 190, 206, 200, 221 },
+                            PasswordSalt = new byte[] { 71, 24, 47, 238, 38, 51, 178, 36, 67, 68, 92, 169, 65, 228, 12, 1, 206, 157, 162, 72, 107, 213, 119, 164, 43, 3, 68, 70, 186, 232, 160, 82, 79, 102, 79, 219, 220, 234, 72, 125, 186, 190, 111, 104, 33, 64, 80, 173, 54, 207, 42, 23, 86, 16, 14, 71, 243, 86, 59, 107, 98, 8, 40, 50, 146, 157, 0, 77, 160, 1, 220, 73, 227, 231, 84, 64, 206, 129, 46, 231, 87, 74, 129, 146, 250, 6, 167, 225, 149, 193, 47, 242, 200, 42, 244, 37, 72, 35, 208, 54, 196, 21, 191, 211, 112, 120, 79, 47, 231, 200, 147, 77, 148, 119, 69, 245, 157, 33, 101, 143, 68, 99, 38, 12, 6, 8, 28, 121 }
                         });
                 });
 
@@ -1882,6 +2631,89 @@ namespace Persistence.Migrations
                     b.Navigation("Tenant");
                 });
 
+            modelBuilder.Entity("Domain.Entities.DailySiteReport", b =>
+                {
+                    b.HasOne("Domain.Entities.User", "ApprovedByUser")
+                        .WithMany("ApprovedDailySiteReports")
+                        .HasForeignKey("ApprovedByUserId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("Domain.Entities.User", "CreatedByUser")
+                        .WithMany("CreatedDailySiteReports")
+                        .HasForeignKey("CreatedByUserId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.Project", "Project")
+                        .WithMany("DailySiteReports")
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.Site", "Site")
+                        .WithMany("DailySiteReports")
+                        .HasForeignKey("SiteId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.Tenant", "Tenant")
+                        .WithMany()
+                        .HasForeignKey("TenantId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("ApprovedByUser");
+
+                    b.Navigation("CreatedByUser");
+
+                    b.Navigation("Project");
+
+                    b.Navigation("Site");
+
+                    b.Navigation("Tenant");
+                });
+
+            modelBuilder.Entity("Domain.Entities.DailySiteReportMaterialLine", b =>
+                {
+                    b.HasOne("Domain.Entities.DailySiteReport", "DailySiteReport")
+                        .WithMany("MaterialLines")
+                        .HasForeignKey("DailySiteReportId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.Material", "Material")
+                        .WithMany()
+                        .HasForeignKey("MaterialId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("DailySiteReport");
+
+                    b.Navigation("Material");
+                });
+
+            modelBuilder.Entity("Domain.Entities.DailySiteReportPhoto", b =>
+                {
+                    b.HasOne("Domain.Entities.DailySiteReport", "DailySiteReport")
+                        .WithMany("Photos")
+                        .HasForeignKey("DailySiteReportId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("DailySiteReport");
+                });
+
+            modelBuilder.Entity("Domain.Entities.DailySiteReportWorkforceSnapshot", b =>
+                {
+                    b.HasOne("Domain.Entities.DailySiteReport", "DailySiteReport")
+                        .WithMany("WorkforceSnapshots")
+                        .HasForeignKey("DailySiteReportId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("DailySiteReport");
+                });
+
             modelBuilder.Entity("Domain.Entities.Drawing", b =>
                 {
                     b.HasOne("Domain.Entities.Project", "Project")
@@ -1960,6 +2792,28 @@ namespace Persistence.Migrations
                     b.Navigation("ApprovedByUser");
 
                     b.Navigation("Project");
+
+                    b.Navigation("Tenant");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Material", b =>
+                {
+                    b.HasOne("Domain.Entities.Tenant", "Tenant")
+                        .WithMany()
+                        .HasForeignKey("TenantId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Tenant");
+                });
+
+            modelBuilder.Entity("Domain.Entities.MetrajPolicy", b =>
+                {
+                    b.HasOne("Domain.Entities.Tenant", "Tenant")
+                        .WithMany()
+                        .HasForeignKey("TenantId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
 
                     b.Navigation("Tenant");
                 });
@@ -2065,6 +2919,25 @@ namespace Persistence.Migrations
                     b.Navigation("Tenant");
                 });
 
+            modelBuilder.Entity("Domain.Entities.ProjectMetrajLayerMapping", b =>
+                {
+                    b.HasOne("Domain.Entities.Project", "Project")
+                        .WithMany("MetrajLayerMappings")
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.Tenant", "Tenant")
+                        .WithMany()
+                        .HasForeignKey("TenantId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Project");
+
+                    b.Navigation("Tenant");
+                });
+
             modelBuilder.Entity("Domain.Entities.PuantajRecord", b =>
                 {
                     b.HasOne("Domain.Entities.User", "ApprovedByUser")
@@ -2135,6 +3008,60 @@ namespace Persistence.Migrations
                     b.Navigation("Tenant");
                 });
 
+            modelBuilder.Entity("Domain.Entities.SiteStockBalance", b =>
+                {
+                    b.HasOne("Domain.Entities.Material", "Material")
+                        .WithMany()
+                        .HasForeignKey("MaterialId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.Site", "Site")
+                        .WithMany()
+                        .HasForeignKey("SiteId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.Tenant", "Tenant")
+                        .WithMany()
+                        .HasForeignKey("TenantId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Material");
+
+                    b.Navigation("Site");
+
+                    b.Navigation("Tenant");
+                });
+
+            modelBuilder.Entity("Domain.Entities.StockTransaction", b =>
+                {
+                    b.HasOne("Domain.Entities.Material", "Material")
+                        .WithMany()
+                        .HasForeignKey("MaterialId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.Site", "Site")
+                        .WithMany()
+                        .HasForeignKey("SiteId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.Tenant", "Tenant")
+                        .WithMany()
+                        .HasForeignKey("TenantId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Material");
+
+                    b.Navigation("Site");
+
+                    b.Navigation("Tenant");
+                });
+
             modelBuilder.Entity("Domain.Entities.Subscription", b =>
                 {
                     b.HasOne("Domain.Entities.SubscriptionPlan", "SubscriptionPlan")
@@ -2199,6 +3126,15 @@ namespace Persistence.Migrations
                     b.Navigation("ProgressEntries");
                 });
 
+            modelBuilder.Entity("Domain.Entities.DailySiteReport", b =>
+                {
+                    b.Navigation("MaterialLines");
+
+                    b.Navigation("Photos");
+
+                    b.Navigation("WorkforceSnapshots");
+                });
+
             modelBuilder.Entity("Domain.Entities.Drawing", b =>
                 {
                     b.Navigation("MetrajResults");
@@ -2220,9 +3156,13 @@ namespace Persistence.Migrations
                 {
                     b.Navigation("ContractItems");
 
+                    b.Navigation("DailySiteReports");
+
                     b.Navigation("Drawings");
 
                     b.Navigation("HakedisPeriods");
+
+                    b.Navigation("MetrajLayerMappings");
 
                     b.Navigation("MetrajResults");
 
@@ -2233,6 +3173,8 @@ namespace Persistence.Migrations
 
             modelBuilder.Entity("Domain.Entities.Site", b =>
                 {
+                    b.Navigation("DailySiteReports");
+
                     b.Navigation("Drawings");
 
                     b.Navigation("MetrajResults");
@@ -2256,9 +3198,13 @@ namespace Persistence.Migrations
 
             modelBuilder.Entity("Domain.Entities.User", b =>
                 {
+                    b.Navigation("ApprovedDailySiteReports");
+
                     b.Navigation("ApprovedHakedisPeriods");
 
                     b.Navigation("ApprovedPuantajRecords");
+
+                    b.Navigation("CreatedDailySiteReports");
 
                     b.Navigation("EmailAuthenticators");
 

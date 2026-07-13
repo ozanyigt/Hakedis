@@ -12,6 +12,7 @@ namespace Application.Features.PuantajRecords.Queries.GetById;
 public class GetByIdPuantajRecordQuery : IRequest<GetByIdPuantajRecordResponse>, ISecuredRequest
 {
     public Guid Id { get; set; }
+    public Guid? TenantId { get; set; }
 
     public string[] Roles => [Admin, Read];
 
@@ -30,8 +31,8 @@ public class GetByIdPuantajRecordQuery : IRequest<GetByIdPuantajRecordResponse>,
 
         public async Task<GetByIdPuantajRecordResponse> Handle(GetByIdPuantajRecordQuery request, CancellationToken cancellationToken)
         {
-            PuantajRecord? puantajRecord = await _puantajRecordRepository.GetAsync(predicate: pr => pr.Id == request.Id, cancellationToken: cancellationToken);
-            await _puantajRecordBusinessRules.PuantajRecordShouldExistWhenSelected(puantajRecord);
+            PuantajRecord puantajRecord = await _puantajRecordBusinessRules.GetScopedAsync(
+                request.Id, request.TenantId, cancellationToken);
 
             GetByIdPuantajRecordResponse response = _mapper.Map<GetByIdPuantajRecordResponse>(puantajRecord);
             return response;

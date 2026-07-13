@@ -25,6 +25,13 @@ public class BaseDbContext : DbContext
     public DbSet<MetrajPolicy> MetrajPolicies { get; set; }
     public DbSet<Worker> Workers { get; set; }
     public DbSet<PuantajRecord> PuantajRecords { get; set; }
+    public DbSet<DailySiteReport> DailySiteReports { get; set; }
+    public DbSet<DailySiteReportPhoto> DailySiteReportPhotos { get; set; }
+    public DbSet<DailySiteReportWorkforceSnapshot> DailySiteReportWorkforceSnapshots { get; set; }
+    public DbSet<DailySiteReportMaterialLine> DailySiteReportMaterialLines { get; set; }
+    public DbSet<Material> Materials { get; set; }
+    public DbSet<SiteStockBalance> SiteStockBalances { get; set; }
+    public DbSet<StockTransaction> StockTransactions { get; set; }
     public DbSet<ContractItem> ContractItems { get; set; }
     public DbSet<HakedisPeriod> HakedisPeriods { get; set; }
     public DbSet<ProgressEntry> ProgressEntries { get; set; }

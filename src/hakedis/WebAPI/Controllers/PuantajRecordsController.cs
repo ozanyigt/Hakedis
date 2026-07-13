@@ -32,9 +32,9 @@ public class PuantajRecordsController : BaseController
     }
 
     [HttpDelete("{id}")]
-    public async Task<ActionResult<DeletedPuantajRecordResponse>> Delete([FromRoute] Guid id)
+    public async Task<ActionResult<DeletedPuantajRecordResponse>> Delete([FromRoute] Guid id, [FromQuery] Guid? tenantId)
     {
-        DeletePuantajRecordCommand command = new() { Id = id };
+        DeletePuantajRecordCommand command = new() { Id = id, TenantId = tenantId };
 
         DeletedPuantajRecordResponse response = await Mediator.Send(command);
 
@@ -42,9 +42,9 @@ public class PuantajRecordsController : BaseController
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<GetByIdPuantajRecordResponse>> GetById([FromRoute] Guid id)
+    public async Task<ActionResult<GetByIdPuantajRecordResponse>> GetById([FromRoute] Guid id, [FromQuery] Guid? tenantId)
     {
-        GetByIdPuantajRecordQuery query = new() { Id = id };
+        GetByIdPuantajRecordQuery query = new() { Id = id, TenantId = tenantId };
 
         GetByIdPuantajRecordResponse response = await Mediator.Send(query);
 
@@ -52,9 +52,14 @@ public class PuantajRecordsController : BaseController
     }
 
     [HttpGet]
-    public async Task<ActionResult<GetListResponse<GetListPuantajRecordListItemDto>>> GetList([FromQuery] PageRequest pageRequest)
+    public async Task<ActionResult<GetListResponse<GetListPuantajRecordListItemDto>>> GetList(
+        [FromQuery] PageRequest pageRequest, [FromQuery] Guid? tenantId,
+        [FromQuery] Guid? projectId, [FromQuery] Guid? siteId)
     {
-        GetListPuantajRecordQuery query = new() { PageRequest = pageRequest };
+        GetListPuantajRecordQuery query = new()
+        {
+            PageRequest = pageRequest, TenantId = tenantId, ProjectId = projectId, SiteId = siteId
+        };
 
         GetListResponse<GetListPuantajRecordListItemDto> response = await Mediator.Send(query);
 

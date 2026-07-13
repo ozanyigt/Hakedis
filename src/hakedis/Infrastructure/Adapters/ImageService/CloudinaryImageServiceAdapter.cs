@@ -30,7 +30,10 @@ public class CloudinaryImageServiceAdapter : ImageServiceBase
             };
         ImageUploadResult imageUploadResult = await _cloudinary.UploadAsync(imageUploadParams);
 
-        return imageUploadResult.Url.ToString();
+        if (imageUploadResult.Error is not null)
+            throw new InvalidOperationException($"Image upload failed: {imageUploadResult.Error.Message}");
+
+        return imageUploadResult.SecureUrl.ToString();
     }
 
     public override async Task DeleteAsync(string imageUrl)

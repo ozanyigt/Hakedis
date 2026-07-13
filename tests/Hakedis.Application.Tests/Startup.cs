@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using StarterProject.Application.Tests.DependencyResolvers;
 
-namespace StarterProject.Application.Tests;
+namespace Hakedis.Application.Tests;
 
 public sealed class Startup
 {

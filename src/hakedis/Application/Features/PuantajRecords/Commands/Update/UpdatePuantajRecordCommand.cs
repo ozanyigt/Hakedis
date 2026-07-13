@@ -46,11 +46,18 @@ public class UpdatePuantajRecordCommand : IRequest<UpdatedPuantajRecordResponse>
 
         public async Task<UpdatedPuantajRecordResponse> Handle(UpdatePuantajRecordCommand request, CancellationToken cancellationToken)
         {
-            PuantajRecord? puantajRecord = await _puantajRecordRepository.GetAsync(predicate: pr => pr.Id == request.Id, cancellationToken: cancellationToken);
-            await _puantajRecordBusinessRules.PuantajRecordShouldExistWhenSelected(puantajRecord);
+            PuantajRecord puantajRecord = await _puantajRecordBusinessRules.GetScopedAsync(
+                request.Id, request.TenantId, cancellationToken);
+            await _puantajRecordBusinessRules.ValidateScopeAsync(
+                puantajRecord.TenantId, request.ProjectId, request.SiteId, request.WorkerId, cancellationToken);
+            await _puantajRecordBusinessRules.EnsureUniqueWorkerDayAsync(
+                puantajRecord.TenantId, request.ProjectId, request.SiteId, request.WorkerId,
+                request.WorkDate, puantajRecord.Id, cancellationToken);
             puantajRecord = _mapper.Map(request, puantajRecord);
+            puantajRecord.TenantId = (await _puantajRecordBusinessRules.ResolveTenantAsync(
+                request.TenantId, true, cancellationToken))!.Value;
 
-            await _puantajRecordRepository.UpdateAsync(puantajRecord!);
+            await _puantajRecordRepository.UpdateAsync(puantajRecord);
 
             UpdatedPuantajRecordResponse response = _mapper.Map<UpdatedPuantajRecordResponse>(puantajRecord);
             return response;
